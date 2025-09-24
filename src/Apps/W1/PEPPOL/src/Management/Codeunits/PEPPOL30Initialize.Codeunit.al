@@ -10,6 +10,7 @@ using Microsoft.Foundation.Reporting;
 codeunit 37204 "PEPPOL30 Initialize"
 {
     Access = Internal;
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Company-Initialize", OnAfterInitElectronicFormats, '', false, false)]
     local procedure CompanyInitialize_OnAfterInitElectronicFormats()
     var
