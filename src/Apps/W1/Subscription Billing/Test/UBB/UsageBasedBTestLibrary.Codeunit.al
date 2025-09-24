@@ -1,3 +1,8 @@
+// ------------------------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+// ------------------------------------------------------------------------------------------------
+
 namespace Microsoft.SubscriptionBilling;
 
 using System.IO;
@@ -5,6 +10,9 @@ using System.Globalization;
 using Microsoft.Finance.Currency;
 using Microsoft.Sales.Document;
 
+/// <summary>
+/// Codeunit Usage Based B. Test Library (ID 139892).
+/// </summary>
 codeunit 139892 "Usage Based B. Test Library"
 {
     Access = Internal;

@@ -1,3 +1,8 @@
+// ------------------------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+// ------------------------------------------------------------------------------------------------
+
 namespace Microsoft.SubscriptionBilling;
 
 using Microsoft.Sales.Document;
@@ -6,6 +11,9 @@ using Microsoft.Purchases.Document;
 using Microsoft.Purchases.History;
 using Microsoft.Utilities;
 
+/// <summary>
+/// Codeunit Document Change Management (ID 8074).
+/// </summary>
 codeunit 8074 "Document Change Management"
 {
     SingleInstance = true;
