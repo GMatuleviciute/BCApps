@@ -5,6 +5,9 @@
 #if not CLEANSCHEMA25
 namespace Microsoft.Integration.Shopify;
 
+/// <summary>
+/// Table Shpfy Templates Warnings (ID 30140).
+/// </summary>
 table 30140 "Shpfy Templates Warnings"
 {
     Access = Internal;

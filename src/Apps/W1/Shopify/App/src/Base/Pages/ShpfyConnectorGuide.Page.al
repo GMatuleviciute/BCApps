@@ -14,6 +14,9 @@ using Microsoft.Foundation.Company;
 using System.Telemetry;
 using System.Utilities;
 
+/// <summary>
+/// Page Shpfy Connector Guide (ID 30136).
+/// </summary>
 page 30136 "Shpfy Connector Guide"
 {
     Caption = 'Shopify Connector Setup';

@@ -5,6 +5,9 @@
 
 namespace Microsoft.Integration.Shopify;
 
+/// <summary>
+/// Page Shpfy Initial Import (ID 30137).
+/// </summary>
 page 30137 "Shpfy Initial Import"
 {
     Caption = 'Shopify Initial Import';

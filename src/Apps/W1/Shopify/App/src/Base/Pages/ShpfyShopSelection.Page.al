@@ -5,6 +5,9 @@
 
 namespace Microsoft.Integration.Shopify;
 
+/// <summary>
+/// Page Shpfy Shop Selection (ID 30142).
+/// </summary>
 page 30142 "Shpfy Shop Selection"
 {
     PageType = List;

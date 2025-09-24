@@ -7,6 +7,9 @@ namespace Microsoft.Integration.Shopify;
 
 using System.Threading;
 
+/// <summary>
+/// Table Shpfy Initial Import Line (ID 30137).
+/// </summary>
 table 30137 "Shpfy Initial Import Line"
 {
     Access = Internal;
