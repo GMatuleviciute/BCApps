@@ -165,7 +165,6 @@ codeunit 132683 "Copilot Test"
 
         // [GIVEN] Copilot capability is registered
         Initialize();
-        //CopilotCapability.RegisterCapability(Enum::"Copilot Capability"::"Text Capability", LearnMoreUrlLbl);
         CopilotCapability.RegisterCapability(Enum::"Copilot Capability"::"Text Capability", Enum::"Copilot Availability"::Preview, Enum::"Copilot Billing Type"::"Not Billed", LearnMoreUrlLbl);
         // [WHEN] ModifyCapability is called
         asserterror CopilotCapability.ModifyCapability(Enum::"Copilot Capability"::"Text Capability", Enum::"Copilot Availability"::"Generally Available", Enum::"Copilot Billing Type"::Undefined, LearnMoreUrl2Lbl);

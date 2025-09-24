@@ -91,7 +91,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                 var
                     PEPPOLTaxInfoProvider: Interface "PEPPOL Tax Info Provider";
                 begin
-                    // DEV: initialize interface variable
                     PEPPOLTaxInfoProvider.GetTaxTotalInfoLCY(SalesHeader, TaxAmountLCY, TaxCurrencyCodeLCY, TaxTotalCurrencyIDLCY);
                     if TaxCurrencyCodeLCY = '' then
                         currXMLport.Skip();
@@ -115,7 +114,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                 var
                     PEPPOLDocumentInfoProvider: Interface "PEPPOL Document Info Provider";
                 begin
-                    // DEV: initialize interface variable
                     BuyerReference := PEPPOLDocumentInfoProvider.GetBuyerReference(SalesHeader);
                     if BuyerReference = '' then
                         currXMLport.Skip();
@@ -137,7 +135,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                 var
                     PEPPOLDocumentInfoProvider: Interface "PEPPOL Document Info Provider";
                 begin
-                    // DEV: initialize interface variable
                     PEPPOLDocumentInfoProvider.GetInvoicePeriodInfo(
                       StartDate,
                       EndDate);
@@ -159,7 +156,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                 var
                     PEPPOLDocumentInfoProvider: Interface "PEPPOL Document Info Provider";
                 begin
-                    // DEV: initialize interface variable
                     PEPPOLDocumentInfoProvider.GetOrderReferenceInfo(
                       SalesHeader,
                       OrderReferenceID);
@@ -184,7 +180,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                     DocumentTypeCode: Text;
                     PEPPOLDocumentInfoProvider: Interface "PEPPOL Document Info Provider";
                 begin
-                    // DEV: initialize interface variable
                     PEPPOLDocumentInfoProvider.GetContractDocRefInfo(
                       SalesHeader,
                       ContractDocumentReferenceID,
@@ -572,13 +567,11 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                     SupplRegAddrCountryIdListId: Text;
                     PEPPOLPartyInfoProvider: Interface "PEPPOL Party Info Provider";
                 begin
-                    // DEV: initialize interface variable
                     PEPPOLPartyInfoProvider.GetAccountingSupplierPartyInfoBIS(
                       SupplierEndpointID,
                       SupplierSchemeID,
                       SupplierName);
 
-                    // DEV: initialize interface variable
                     PEPPOLPartyInfoProvider.GetAccountingSupplierPartyPostalAddr(
                       SalesHeader,
                       StreetName,
@@ -589,14 +582,12 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                       IdentificationCode,
                       DummyVar);
 
-                    // DEV: initialize interface variable
                     PEPPOLPartyInfoProvider.GetAccountingSupplierPartyTaxSchemeBIS(
                       TempVATAmtLine,
                       CompanyID,
                       CompanyIDSchemeID,
                       TaxSchemeID);
 
-                    // DEV: initialize interface variable
                     PEPPOLPartyInfoProvider.GetAccountingSupplierPartyLegalEntityBIS(
                       PartyLegalEntityRegName,
                       PartyLegalEntityCompanyID,
@@ -605,7 +596,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                       SupplierRegAddrCountryIdCode,
                       SupplRegAddrCountryIdListId);
 
-                    // DEV: initialize interface variable
                     PEPPOLPartyInfoProvider.GetAccountingSupplierPartyContact(
                       SalesHeader,
                       DummyVar,
@@ -855,7 +845,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                 var
                     PEPPOLPartyInfoProvider: Interface "PEPPOL Party Info Provider";
                 begin
-                    // DEV: initialize interface variable
                     PEPPOLPartyInfoProvider.GetAccountingCustomerPartyInfoBIS(
                       SalesHeader,
                       CustomerEndpointID,
@@ -864,7 +853,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                       CustomerPartyIDSchemeID,
                       CustomerName);
 
-                    // DEV: initialize interface variable
                     PEPPOLPartyInfoProvider.GetAccountingCustomerPartyPostalAddr(
                       SalesHeader,
                       CustomerStreetName,
@@ -875,7 +863,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                       CustomerIdentificationCode,
                       DummyVar);
 
-                    // DEV: initialize interface variable
                     PEPPOLPartyInfoProvider.GetAccountingCustomerPartyTaxSchemeBIS30(
                       SalesHeader,
                       CustPartyTaxSchemeCompanyID,
@@ -883,14 +870,12 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                       CustTaxSchemeID,
                       TempVATAmtLine);
 
-                    // DEV: initialize interface variable
                     PEPPOLPartyInfoProvider.GetAccountingCustomerPartyLegalEntityBIS(
                       SalesHeader,
                       CustPartyLegalEntityRegName,
                       CustPartyLegalEntityCompanyID,
                       CustPartyLegalEntityIDSchemeID);
 
-                    // DEV: initialize interface variable
                     PEPPOLPartyInfoProvider.GetAccountingCustomerPartyContact(
                       SalesHeader,
                       DummyVar,
@@ -948,7 +933,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                 var
                     PEPPOLPartyInfoProvider: Interface "PEPPOL Party Info Provider";
                 begin
-                    // DEV: initialize interface variable
                     PEPPOLPartyInfoProvider.GetTaxRepresentativePartyInfo(
                       TaxRepPartyNameName,
                       PayeePartyTaxSchemeCompanyID,
@@ -1080,14 +1064,12 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                 var
                     PEPPOLDeliveryInfoProvider: Interface "PEPPOL Delivery Info Provider";
                 begin
-                    // DEV: initialize interface variable
                     PEPPOLDeliveryInfoProvider.GetGLNDeliveryInfo(
                       SalesHeader,
                       ActualDeliveryDate,
                       DeliveryID,
                       DeliveryIDSchemeID);
 
-                    // DEV: initialize interface variable
                     PEPPOLDeliveryInfoProvider.GetDeliveryAddress(
                       SalesHeader,
                       DeliveryStreetName,
@@ -1098,7 +1080,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                       DeliveryCountryIdCode,
                       DummyVar);
 
-                    // DEV: initialize interface variable
                     PEPPOLDeliveryInfoProvider.GetDeliveryPartyName(SalesHeader, DeliveryPartyNameValue);
                 end;
             }
@@ -1170,7 +1151,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                 var
                     PEPPOLPaymentInfoProvider: Interface "PEPPOL Payment Info Provider";
                 begin
-                    // DEV: initialize interface variable
                     PEPPOLPaymentInfoProvider.GetPaymentMeansInfo(
                       SalesHeader,
                       PaymentMeansCode,
@@ -1181,7 +1161,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                       PrimaryAccountNumberID,
                       NetworkID);
 
-                    // DEV: initialize interface variable
                     PEPPOLPaymentInfoProvider.GetPaymentMeansPayeeFinancialAccBIS(
                         SalesHeader,
                         PayeeFinancialAccountID,
@@ -1203,7 +1182,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                 var
                     PEPPOLPaymentInfoProvider: Interface "PEPPOL Payment Info Provider";
                 begin
-                    // DEV: initialize interface variable
                     PEPPOLPaymentInfoProvider.GetPaymentTermsInfo(
                       SalesHeader,
                       PaymentTermsNote);
@@ -1374,7 +1352,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                         if (not FindNextVATAmtRec(TempVATAmtLine, TaxSubtotalLoop.Number)) and (TaxSubtotalLoop.Number > 1) then
                             currXMLport.Break();
 
-                        // DEV: initialize interface variable
                         PEPPOLTaxInfoProvider.GetTaxSubtotalInfo(
                           TempVATAmtLine,
                           SalesHeader,
@@ -1397,7 +1374,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                 var
                     PEPPOLTaxInfoProvider: Interface "PEPPOL Tax Info Provider";
                 begin
-                    // DEV: initialize interface variable
                     PEPPOLTaxInfoProvider.GetTaxTotalInfo(
                       SalesHeader,
                       TempVATAmtLine,
@@ -2072,7 +2048,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                         currXMLport.Break();
 
                     OnInvoiceLineLoopOnAfterGetRecordOnBeforeGetLineGeneralInfo(SalesInvoiceLine, SalesLine);
-                    // DEV: initialize interface variable
                     PEPPOLLineInfoProvider.GetLineGeneralInfo(
                       SalesLine,
                       SalesHeader,
@@ -2083,7 +2058,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                       LineExtensionAmountCurrencyID,
                       InvoiceLineAccountingCost);
 
-                    // DEV: initialize interface variable
                     PEPPOLLineInfoProvider.GetLineUnitCodeInfo(SalesLine, unitCode, DummyVar);
                 end;
             }
@@ -2170,7 +2144,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                         repeat
                             SalesLine.TransferFields(SalesInvoiceLine);
                             OnGetTotalsOnBeforeGetSalesLineTotals(SalesInvoiceLine, SalesLine);
-                            // DEV: initialize interface variable
                             PEPPOLTaxInfoProvider.GetTotals(SalesLine, TempVATAmtLine);
                             PEPPOLTaxInfoProvider.GetTaxCategories(SalesLine, TempVATProductPostingGroup);
                         until SalesInvoiceLine.Next() = 0;
@@ -2186,7 +2159,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
     begin
         case PEPPOL30ProcessingType of
             PEPPOL30ProcessingType::Sale:
-                // DEV: initialize interface variable
                 exit(PEPPOLPostedDocumentIterator.FindNextSalesInvoiceRec(SalesInvoiceHeader, SalesHeader, Position));
             else
                 OnFindNextInvoiceRec(Position, SalesHeader, Found);
@@ -2199,7 +2171,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
     begin
         case PEPPOL30ProcessingType of
             PEPPOL30ProcessingType::Sale:
-                // DEV: initialize interface variable
                 exit(PEPPOLPostedDocumentIterator.FindNextSalesInvoiceLineRec(SalesInvoiceLine, SalesLine, Position));
             else
                 OnFindNextInvoiceLineRec(Position, SalesLine, Found);
@@ -2234,7 +2205,6 @@ xmlport 37201 "Sales Invoice - PEPPOL30"
                         repeat
                             SalesLine.TransferFields(SalesInvoiceLine);
                             OnInitializeOnBeforeGetInvoiceRoundingLine(SalesInvoiceLine, SalesLine);
-                            // DEV: initialize interface variable
                             PEPPOLMonetaryInfoProvider.GetInvoiceRoundingLine(TempSalesLineRounding, SalesLine);
                         until SalesInvoiceLine.Next() = 0;
                     if TempSalesLineRounding."Line No." <> 0 then

@@ -10,7 +10,6 @@ codeunit 139022 "Copilot Test Partner"
 
     var
         CopilotCapability: Codeunit "Copilot Capability";
-        //CopilotTestLibrary: Codeunit "Copilot Test Library";
         LibraryAssert: Codeunit "Library Assert";
         LearnMoreUrlLbl: Label 'http://LearnMore.com', Locked = true;
         LearnMoreUrl2Lbl: Label 'http://LearnMore2.com', Locked = true;

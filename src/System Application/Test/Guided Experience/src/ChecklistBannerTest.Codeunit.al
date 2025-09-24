@@ -109,8 +109,6 @@ codeunit 132605 "Checklist Banner Test"
 
         EnqueueGuidedExperienceItemFieldsInVariableStorage(GuidedExperienceItem5);
         LibraryVariableStorage.Enqueue(GuidedExperienceItem5.Link);
-        //EnqueueGuidedExperienceItemFieldsInVariableStorage(GuidedExperienceItem3);
-        //EnqueueGuidedExperienceItemFieldsInVariableStorage(GuidedExperienceItem5);
 
         // [WHEN] The checklist banner is run
         ChecklistBannerContainer.Run();
@@ -394,7 +392,6 @@ codeunit 132605 "Checklist Banner Test"
         WelcomeStepForTheSecondProfile(ChecklistBannerContainer);
         GetStartedForSecondProfile(ChecklistBannerContainer);
         CurrentChecklistItemForTheSecondProfile(ChecklistBannerContainer);
-        //SecondChecklistItemForTheSecondProfile(ChecklistBannerContainer);
     end;
 
     local procedure WelcomeStepForTheFirstProfile(var ChecklistBannerContainer: TestPage "Checklist Banner Container")

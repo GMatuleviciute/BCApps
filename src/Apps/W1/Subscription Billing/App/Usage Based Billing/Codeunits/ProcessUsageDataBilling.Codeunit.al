@@ -190,7 +190,6 @@ codeunit 8026 "Process Usage Data Billing"
             UnitPrice := UnitCost;
 
         UpdateServiceObjectQuantity(ServiceCommitment."Subscription Header No.", NewServiceObjectQuantity);
-        //Note: Service commitment will be recalculated if the quantity in service object changes
         Commit();
         ServiceCommitment.Get(ServiceCommitment."Entry No.");
         UpdateServiceCommitment(LastUsageDataBilling, ServiceCommitment, UnitPrice, UnitCost, CurrencyCode);

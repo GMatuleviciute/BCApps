@@ -80,7 +80,6 @@ page 8034 "Create Usage B. Vend. B. Docs"
                 BillingProposal.CreateBillingProposalForContract(ServicePartner, VendorContract."No.", ContractLineFilter, BillingRhytmFilter, BillingDate, 0D);
             until VendorContract.Next() = 0;
 
-        //NOTE: CreateBillingDocument works with all Billing lines previously created by BillingProposal.CreateBillingProposalForContract
         //Therefore it will batch create documents for Usage based billing lines
         if not BillingProposal.CreateBillingDocument(ServicePartner, VendorContract."No.", DocumentDate, PostingDate, false, false) then
             Error(NoInvoiceCreatedErr);

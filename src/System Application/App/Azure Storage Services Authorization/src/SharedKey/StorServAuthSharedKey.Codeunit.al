@@ -153,7 +153,6 @@ codeunit 9064 "Stor. Serv. Auth. Shared Key" implements "Storage Service Authori
 
         if QueryString <> '' then begin
             // According to documentation it should be lexicographically, but I didn't find a better way than SortedDictionary
-            // see: https://go.microsoft.com/fwlink/?linkid=2211418
             SplitQueryStringIntoSortedDictionary(QueryString, SortedDictionaryQuery);
             foreach SortedDictionaryEntry in SortedDictionaryQuery do begin
                 StringBuilderQuery.Append(NewLine());

@@ -474,7 +474,6 @@ codeunit 144741 "BCPT Setup Card Test"
                 //BCPTHeader.Status := BCPTHeader.Status::Cancelled;
                 BCPTHeaderCU.SetRunStatus(BCPTHeader, BCPTHeader.Status::Cancelled);
                 //BCPTHeader.
-                //BCPTHeader.Modify();
                 Commit();
             end else
                 BCPTHeader."Started at" := BCPTHeader."Started at" - 60000 * BCPTHeader."Duration (minutes)";

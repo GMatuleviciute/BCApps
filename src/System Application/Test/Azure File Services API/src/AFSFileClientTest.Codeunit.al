@@ -366,7 +366,6 @@ codeunit 132520 "AFS File Client Test"
         AFSFileClient.PutFileText('sourcefile.txt', FileContentLbl);
 
         // [WHEN] The programmer copies a file
-        // NOTE: When copying a file using shared access signature you need to authorize the source file with the same shared access signature
         SourceFileURI := 'https://' + AFSInitTestStorage.GetStorageAccountName() + '.file.core.windows.net/' + AFSInitTestStorage.GetFileShareName() + '/sourcefile.txt';
         HttpRequestMessage.SetRequestUri(SourceFileURI);
         SharedKeyAuthorization.Authorize(HttpRequestMessage, AFSInitTestStorage.GetStorageAccountName());

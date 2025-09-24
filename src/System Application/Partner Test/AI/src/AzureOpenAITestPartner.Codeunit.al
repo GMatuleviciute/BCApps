@@ -45,7 +45,6 @@ codeunit 139021 "Azure OpenAI Test Partner"
         // [GIVEN] The privacy notice is agreed to
         // [GIVEN] The authorization key is set
         PrivacyNotice.SetApprovalState(AzureOpenAITxt, "Privacy Notice Approval State"::Agreed);
-        //AzureOpenAI.SetAuthorization(Enum::"AOAI Model Type"::"Text Completions", EndpointTxt, DeploymentTxt, Any.AlphanumericText(10));
         AzureOpenAI.SetManagedResourceAuthorization(Enum::"AOAI Model Type"::"Text Completions", ManagedResourceDeploymentTxt);
 
         // [GIVEN] Capability is set

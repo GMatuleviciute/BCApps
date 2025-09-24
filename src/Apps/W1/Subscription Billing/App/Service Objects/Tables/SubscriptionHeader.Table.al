@@ -197,7 +197,6 @@ table 8057 "Subscription Header"
             else
             if ("Bill-to Country/Region Code" = filter(<> '')) "Post Code".City where("Country/Region Code" = field("Bill-to Country/Region Code"));
             //This property is currently not supported
-            //TestTableRelation = false;
             ValidateTableRelation = false;
             DataClassification = EndUserIdentifiableInformation;
 
@@ -288,7 +287,6 @@ table 8057 "Subscription Header"
             else
             if ("Ship-to Country/Region Code" = filter(<> '')) "Post Code".City where("Country/Region Code" = field("Ship-to Country/Region Code"));
             //This property is currently not supported
-            //TestTableRelation = false;
             ValidateTableRelation = false;
             DataClassification = EndUserIdentifiableInformation;
 
@@ -668,7 +666,6 @@ table 8057 "Subscription Header"
             else
             if ("Ship-to Country/Region Code" = filter(<> '')) "Post Code" where("Country/Region Code" = field("Ship-to Country/Region Code"));
             //This property is currently not supported
-            //TestTableRelation = false;
             ValidateTableRelation = false;
             DataClassification = EndUserIdentifiableInformation;
 

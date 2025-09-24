@@ -1301,7 +1301,6 @@ codeunit 139688 "Recurring Billing Test"
     begin
         Initialize();
 
-        // if Sum of Billing Lines for Contract is Positive = Invoice, Negative = Credit Memo
         // Invoice
         ContractNo := LibraryUtility.GenerateGUID();
         MockBillingLineForContractWithAmount(ContractNo, LibraryRandom.RandDecInRange(60, 100, 2));
@@ -1323,7 +1322,6 @@ codeunit 139688 "Recurring Billing Test"
     begin
         Initialize();
 
-        // if Sum of Billing Lines for Customer is Positive = Invoice, Negative = Credit Memo
         // Invoice
         PartnerNo := LibraryUtility.GenerateGUID();
         MockBillingLineForPartnerNoWithServiceAmount("Service Partner"::Vendor, PartnerNo, LibraryRandom.RandDecInRange(60, 100, 2));
@@ -1346,7 +1344,6 @@ codeunit 139688 "Recurring Billing Test"
     begin
         Initialize();
 
-        // if Sum of Billing Lines for Contract is Positive = Invoice, Negative = Credit Memo
         // Invoice
         ContractNo := LibraryUtility.GenerateGUID();
         MockBillingLineForContractWithAmount(ContractNo, LibraryRandom.RandDecInRange(60, 100, 2));
@@ -1368,7 +1365,6 @@ codeunit 139688 "Recurring Billing Test"
     begin
         Initialize();
 
-        // if Sum of Billing Lines for Customer is Positive = Invoice, Negative = Credit Memo
         // Invoice
         PartnerNo := LibraryUtility.GenerateGUID();
         MockBillingLineForPartnerNoWithServiceAmount("Service Partner"::Customer, PartnerNo, LibraryRandom.RandDecInRange(60, 100, 2));

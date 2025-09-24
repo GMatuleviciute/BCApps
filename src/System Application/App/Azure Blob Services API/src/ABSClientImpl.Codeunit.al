@@ -5,7 +5,6 @@
 
 namespace System.Azure.Storage;
 
-// See: https://go.microsoft.com/fwlink/?linkid=2210594
 codeunit 9051 "ABS Client Impl."
 {
     Access = Internal;

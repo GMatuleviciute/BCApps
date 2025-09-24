@@ -80,7 +80,6 @@ codeunit 132925 "Plan Configuration E2E Test"
         LibraryAssert.AreEqual(CompanyName(), PlanConfigurationCard.CustomPermissionSets.Company.Value, 'Wrong company');
         LibraryAssert.AreEqual('', PlanConfigurationCard.CustomPermissionSets.ExtensionName.Value, 'Wrong extension name');
         LibraryAssert.AreEqual('System', PlanConfigurationCard.CustomPermissionSets.PermissionScope.Value, 'Wrong permission set scope');
-        //LibraryAssert.IsFalse(PlanConfigurationCard.CustomPermissionSets.Next(), 'There should not be more permission sets');
 
         // Add new permission set
         PlanConfigurationCard.CustomPermissionSets.New();
@@ -107,7 +106,6 @@ codeunit 132925 "Plan Configuration E2E Test"
 
         LibraryAssert.AreEqual('AAD PLAN VIEW', PlanConfigurationCard.CustomPermissionSets.PermissionSetId.Value, 'Wrong permission set');
         LibraryAssert.AreEqual('', PlanConfigurationCard.CustomPermissionSets.Company.Value, 'Wrong company');
-        // LibraryAssert.AreEqual('Azure AD Plan Test Library', PlanConfigurationCard.CustomPermissionSets.ExtensionName.Value, 'Wrong extension name');  // Disabled because it could be either 'System Application Test Library' or 'Azure AD Plan Test Library' depending on the whether the test is executed as part of System Application Tests or Azure AD Plan Tests.
         LibraryAssert.AreEqual('System', PlanConfigurationCard.CustomPermissionSets.PermissionScope.Value, 'Wrong permission set scope');
         LibraryAssert.IsFalse(PlanConfigurationCard.CustomPermissionSets.Next(), 'There should not be more permission sets');
 

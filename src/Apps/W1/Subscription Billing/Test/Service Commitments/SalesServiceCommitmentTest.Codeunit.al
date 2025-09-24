@@ -531,7 +531,6 @@ codeunit 139915 "Sales Service Commitment Test"
         SetupAdditionalServiceCommPackageLine(Enum::"Service Partner"::Vendor);
         ContractTestLibrary.SetupSalesServiceCommitmentItemAndAssignToServiceCommitmentPackage(Item, Enum::"Item Service Commitment Type"::"Service Commitment Item", ServiceCommitmentPackage.Code);
         LibrarySales.CreateSalesHeader(SalesHeader, SalesHeader."Document Type"::Order, '');
-        // Quantity=2; Qty. to Ship=1; Quantity Shipped=Quantity Invoiced=1
         // Post
         LibrarySales.CreateSalesLineWithShipmentDate(SalesLine, SalesHeader, Enum::"Sales Line Type"::Item, Item."No.", WorkDate(), 2);
         SalesLine.Validate("Qty. to Ship", 1);
@@ -540,7 +539,6 @@ codeunit 139915 "Sales Service Commitment Test"
         FetchSalesLine.Get(SalesLine."Document Type", SalesLine."Document No.", SalesLine."Line No.");
         Assert.AreEqual(1, FetchSalesLine."Quantity Shipped", NotCreatedProperlyErr);
         Assert.AreEqual(1, FetchSalesLine."Quantity Invoiced", NotCreatedProperlyErr);
-        // Quantity=2; Qty. to Ship=1; Quantity Shipped=Quantity Invoiced=2
         // Post
         ReleaseSalesDoc.PerformManualReopen(SalesHeader);
         FetchSalesLine.Validate("Shipment Date", WorkDate()); // set shipment date for next delivery

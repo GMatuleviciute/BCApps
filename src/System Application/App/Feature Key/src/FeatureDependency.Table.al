@@ -34,6 +34,5 @@ table 2611 "Feature Dependency"
 
     trigger OnInsert()
     begin
-        // FeatureDependencyFacade.ValidateDependency(Rec);
     end;
 }

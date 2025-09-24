@@ -194,7 +194,6 @@ codeunit 130454 "Test Runner - Mgt"
         TestMethodLineFunction.Modify();
     end;
 
-    // TODO: Temporary fix refactor to system events.
     local procedure StartStopPermissionMock()
     var
         AllObj: Record AllObj;

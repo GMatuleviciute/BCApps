@@ -252,7 +252,6 @@ codeunit 3915 "Reten. Pol. Filtering Impl." implements "Reten. Pol. Filtering"
                     SetMarks(RecordRef, true, SelectedSystemIds);
                 end else
                     if (ExpirationDate <= CurrDate) or (ExpirationDate >= Yesterday()) then begin
-                        // if ExpirationDate is >= today - 1, don't set filter and remove all records from temp
                         if ExpirationDate < Yesterday() then
                             // set filter for date in filtergroup 11
                             ApplyRetentionPolicy.SetWhereNewerExpirationDateFilter(RetentionPolicySetupLine."Date Field No.", ExpirationDate, RecordRef, 11, RetenPolFilteringParam."Null Date Replacement value");

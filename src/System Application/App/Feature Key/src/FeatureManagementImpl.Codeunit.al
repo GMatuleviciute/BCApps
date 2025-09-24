@@ -105,7 +105,6 @@ codeunit 2610 "Feature Management Impl."
                     else
                         FeatureDataUpdateStatus."Feature Status" := FeatureDataUpdateStatus."Feature Status"::Enabled;
             end;
-        // If the table extension is not in sync during upgrade then Get() always returns False,
         // so the following insert will fail if the record does exist.
         if AllowInsert then
             if FeatureDataUpdateStatus.Insert() then

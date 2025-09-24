@@ -86,15 +86,11 @@ enum 30159 "Shpfy Metafield Type" implements "Shpfy IMetafield Type"
     }
 
     // Intentionally commented out as we are not supporting this type at the moment
-    // value(12; rating)
     // {
-    //     Caption = 'Rating';
     // }
 
     // Intentionally commented out as we are not supporting this type at the moment
-    // value(13; rich_text_field)
     // {
-    //     Caption = 'Rich text';
     // }
 
     value(14; single_line_text_field)

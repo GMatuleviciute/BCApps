@@ -208,7 +208,6 @@ codeunit 1923 "Profiling Data Processor"
     var
         AggregationTypeUniqueIdentifier: Text;
     begin
-        // If the current AggregationTypeUniqueIdentifier has not been encountered yet (in the current branch of the tree), then add the full time of the current node to the aggregation.
         AggregationTypeUniqueIdentifier := GetUniqueIdentifierByAggregationType(CurrProfilingNode, ProfilingAggregationType);
         if not ExclusionSet.Contains(AggregationTypeUniqueIdentifier) then begin
             ExclusionSet.Add(AggregationTypeUniqueIdentifier);

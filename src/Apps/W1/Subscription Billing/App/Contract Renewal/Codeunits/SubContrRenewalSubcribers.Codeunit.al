@@ -150,7 +150,6 @@ codeunit 8001 "Sub. Contr. Renewal Subcribers"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Copy Document Mgt.", OnCopySalesDocLineOnAfterCalcCopyThisLine, '', false, false)]
     local procedure ExcludeRenewalForSalesLine(var ToSalesLine: Record "Sales Line"; var CopyThisLine: Boolean)
     begin
-        //NOTE: In Standard BC parameter is called ToSalesLine, but FromSalesLine is actually passed to event
         if CopyThisLine then
             CopyThisLine := ToSalesLine.Type <> "Sales Line Type"::"Service Object";
     end;

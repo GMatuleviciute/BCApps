@@ -34,7 +34,6 @@ table 2609 "Feature Key Buffer"
 
             trigger OnValidate()
             begin
-                // FeatureManagementFacade.ValidateEnabled(Rec, FeatureDataUpdateStatus);
             end;
         }
         field(3; Description; Text[2048])
@@ -99,17 +98,14 @@ table 2609 "Feature Key Buffer"
 
     internal procedure DrillDownTryItOut()
     begin
-        // FeatureManagementFacade.DrillDownTryItOut(Rec);
     end;
 
     internal procedure Refresh()
     begin
-        // FeatureManagementFacade.Refresh(Rec, FeatureDataUpdateStatus);
     end;
 
     internal procedure ScheduleDataUpdate()
     begin
-        // FeatureManagementFacade.Update(FeatureDataUpdateStatus);
     end;
 
     internal procedure ShowDataUpdateLog()
@@ -156,6 +152,5 @@ table 2609 "Feature Key Buffer"
 
     internal procedure UpdateVisibility(var ActionVisibility: Dictionary of [Text, Boolean])
     begin
-        // FeatureManagementFacade.UpdateVisibility(Rec, FeatureDataUpdateStatus, ActionVisibility);
     end;
 }

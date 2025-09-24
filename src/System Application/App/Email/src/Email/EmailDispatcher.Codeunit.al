@@ -39,7 +39,6 @@ codeunit 8888 "Email Dispatcher"
         FeatureTelemetry.LogUptake('0000CTM', EmailFeatureNameLbl, Enum::"Feature Uptake Status"::Used, Dimensions);
 
         // -----------
-        // NB: Avoid adding events here as any error would cause a roll-back and possibly an inconsistent state of the Email Outbox.
         // -----------
 
         Rec.LockTable(true);
@@ -61,7 +60,6 @@ codeunit 8888 "Email Dispatcher"
         LastErrorText: Text;
     begin
         // -----------
-        // NB: Avoid adding events here as any error would cause a roll-back and possibly an inconsistent state of the Email Outbox.
         // -----------
         UpdateOutboxStatus(EmailOutbox, EmailOutbox.Status::Processing);
 
@@ -161,7 +159,6 @@ codeunit 8888 "Email Dispatcher"
         RescheduleTime: DateTime;
     begin
         // -----------
-        // NB: Avoid adding events here as any error would cause a roll-back and possibly an inconsistent state of the Email Outbox.
         // -----------
 
         // Jitter - Random delay between 0 and 10000 milliseconds (10 seconds)

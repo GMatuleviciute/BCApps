@@ -63,7 +63,6 @@ codeunit 132548 "Page Summary Provider Test"
         // [Then] The summary reflects the page and record
         ValidateSummaryHeader(PageSummaryJsonObject, 'Page summary', 'Card', 'Brick');
         LibraryAssert.AreEqual('132549', ReadJsonString(PageSummaryJsonObject, 'cardPageId'), 'Incorrect cardPageId');
-        // fieldgroup(Brick; TestInteger, TestText, TestCode, TestDateTime) defines 4 fields
         LibraryAssert.AreEqual(4, GetNumberOfFields(PageSummaryJsonObject), 'Incorrect number of fields returned.');
         ValidateSummaryField(PageSummaryJsonObject, 0, 'TestText', PageProviderSummaryTest.TestText, 'Text');
         ValidateSummaryField(PageSummaryJsonObject, 1, 'TestInteger', format(PageProviderSummaryTest.TestInteger), 'Integer');
@@ -152,7 +151,6 @@ codeunit 132548 "Page Summary Provider Test"
         // [Then] The summary reflects the page and record
         ValidateSummaryHeader(PageSummaryJsonObject, 'Page summary', 'Card', 'Brick');
         LibraryAssert.AreEqual('132549', ReadJsonString(PageSummaryJsonObject, 'cardPageId'), 'Incorrect cardPageId');
-        // fieldgroup(Brick; TestInteger, TestText, TestCode, TestDateTime) defines 4 fields
         LibraryAssert.AreEqual(4, GetNumberOfFields(PageSummaryJsonObject), 'Incorrect number of fields returned.');
         ValidateSummaryField(PageSummaryJsonObject, 0, 'TestText', PageProviderSummaryTest.TestText, 'Text');
         ValidateSummaryField(PageSummaryJsonObject, 1, 'TestInteger', format(PageProviderSummaryTest.TestInteger), 'Integer');
@@ -252,7 +250,6 @@ codeunit 132548 "Page Summary Provider Test"
         // [Then] The summary reflects the page and record without any Media or Blob fields
         ValidateSummaryHeader(PageSummaryJsonObject, 'Page summary Media Test card', 'Card', 'Brick');
         LibraryAssert.AreEqual(Format(Page::"Page Summary Media Test Card", 0, 9), ReadJsonString(PageSummaryJsonObject, 'cardPageId'), 'Incorrect cardPageId');
-        // fieldgroup(Brick; TestInteger, TestText, TestCode, TestDateTime) defines 4 fields
         LibraryAssert.AreEqual(4, GetNumberOfFields(PageSummaryJsonObject), 'Incorrect number of fields returned.');
         ValidateSummaryField(PageSummaryJsonObject, 0, 'TestText', PageProviderSummaryTest3.TestText, 'Text');
         ValidateSummaryField(PageSummaryJsonObject, 1, 'TestInteger', format(PageProviderSummaryTest3.TestInteger), 'Integer');

@@ -1235,7 +1235,6 @@ table 8059 "Subscription Line"
     begin
         if "Currency Code" <> '' then begin
             if UpdateCurrencyExchangeRates.ExchangeRatesForCurrencyExist("Currency Factor Date", "Currency Code") then begin
-                // note: Currency Factor will be filled from OpenExchangeSelectionPage
                 if "Currency Code" <> xRec."Currency Code" then
                     RecalculateAmountsFromCurrencyData();
             end else

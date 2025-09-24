@@ -80,13 +80,10 @@ codeunit 139036 "Data Compression Tests"
         EntryTempBlob: Codeunit "Temp Blob";
         EntryInStream: InStream;
     begin
-        // Purpose: Verify error is thrown if no ZIP archive have been created
 
-        // Setup: Create an empty file
         Clear(DataCompression);
         EntryTempBlob.CreateInStream(EntryInStream);
 
-        // Exercise: Try to add a file to an uninitialized ZIP archive
         asserterror DataCompression.AddEntry(EntryInStream, 'some/directory/test.txt');
         Assert.ExpectedErrorCode(DotNetVariableNotCreatedErr);
 

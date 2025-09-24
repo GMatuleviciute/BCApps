@@ -291,7 +291,6 @@ table 8052 "Customer Subscription Contract"
             else
             if ("Ship-to Country/Region Code" = filter(<> '')) "Post Code".City where("Country/Region Code" = field("Ship-to Country/Region Code"));
             //This property is currently not supported
-            //TestTableRelation = false;
             ValidateTableRelation = false;
             DataClassification = EndUserIdentifiableInformation;
 
@@ -607,7 +606,6 @@ table 8052 "Customer Subscription Contract"
             else
             if ("Ship-to Country/Region Code" = filter(<> '')) "Post Code" where("Country/Region Code" = field("Ship-to Country/Region Code"));
             //This property is currently not supported
-            //TestTableRelation = false;
             ValidateTableRelation = false;
             DataClassification = EndUserIdentifiableInformation;
 

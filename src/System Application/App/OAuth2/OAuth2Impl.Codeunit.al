@@ -146,7 +146,6 @@ codeunit 502 OAuth2Impl
         // Retrieve the Client URL
         RedirectUrl := GetUrl(ClientType::Web);
 
-        // For SaaS Extract the Base Url (domain) from the full CLient URL
         if EnvironmentInformation.IsSaaSInfrastructure() then
             RedirectUrl := GetBaseUrl(RedirectUrl);
 

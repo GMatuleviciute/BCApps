@@ -95,7 +95,6 @@ codeunit 139687 "Recurring Billing Docs Test"
         PurchaseLine.Modify(false);
         // [WHEN] Invoke Get Vendor Subscription Contract Lines
         PurchaseLine.AssignVendorContractLine();
-        // Commit()); // retain changes
 
         // [THEN] Test if Purchase header is marked as Recurring billing
         PurchaseHeader.Get(PurchaseHeader."Document Type", PurchaseHeader."No.");
@@ -374,7 +373,6 @@ codeunit 139687 "Recurring Billing Docs Test"
         // Credit Memo exists
         LibrarySetupStorage.Save(Database::"Subscription Contract Setup");
         InitAndCreateBillingDocument("Service Partner"::Customer);
-        // DialogMsg := SalesCrMemoExistsMsg;
         LibraryVariableStorage.Enqueue(SalesCrMemoExistsMsg);
         GetPostedSalesDocumentsFromContract(CustomerContract);
         CorrectPostedSalesInvoice.CreateCreditMemoCopyDocument(SalesInvoiceHeader, SalesHeader);
@@ -393,7 +391,6 @@ codeunit 139687 "Recurring Billing Docs Test"
         // Unposted invoice exists
         LibrarySetupStorage.Save(Database::"Subscription Contract Setup");
         InitAndCreateBillingDocument("Service Partner"::Customer);
-        // DialogMsg := UnpostedSalesInvExistsMsg;
         LibraryVariableStorage.Enqueue(UnpostedSalesInvExistsMsg);
         BillingProposal.CreateBillingProposalFromContract(CustomerContract."No.", CustomerContract.GetFilter("Billing Rhythm Filter"), "Service Partner"::Customer);
     end;
@@ -528,7 +525,6 @@ codeunit 139687 "Recurring Billing Docs Test"
         // Credit Memo exists
         PostPurchaseInvoice();
         LibraryVariableStorage.Enqueue(PurchCrMemoExistsMsg);
-        // DialogMsg := PurchCrMemoExistsMsg;
         ContractTestLibrary.FilterBillingLineArchiveOnContractLine(BillingLineArchive, VendorContract."No.", 0, Enum::"Service Partner"::Vendor);
         BillingLineArchive.FindFirst();
         PurchaseInvoiceHeader.Get(BillingLineArchive."Document No.");
@@ -548,7 +544,6 @@ codeunit 139687 "Recurring Billing Docs Test"
         // Unposted invoice exists
         LibrarySetupStorage.Save(Database::"Subscription Contract Setup");
         InitAndCreateBillingDocument("Service Partner"::Vendor);
-        // DialogMsg := UnpostedPurchaseInvExistsMsg;
         LibraryVariableStorage.Enqueue(UnpostedPurchaseInvExistsMsg);
         BillingProposal.CreateBillingProposalFromContract(VendorContract."No.", VendorContract.GetFilter("Billing Rhythm Filter"), "Service Partner"::Vendor);
     end;
@@ -1268,7 +1263,6 @@ codeunit 139687 "Recurring Billing Docs Test"
 
         // [WHEN] Invoke Get Vendor Subscription Contract Lines
         PurchaseHeader.RunGetVendorContractLines();
-        // Commit()); // retain changes
 
         // [THEN] Test if purchase line is created with Item No. from Subscription
         GetVendorContractServiceCommitment(VendorContract."No.");

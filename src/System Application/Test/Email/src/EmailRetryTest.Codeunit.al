@@ -203,7 +203,6 @@ codeunit 134703 "Email Retry Test"
         // [Then] The retry records are deleted, the Retry No. is reset to 0, and the status is set to Queued
         Assert.AreEqual(1, EmailOutboxTestPage."Retry No.".AsInteger(), 'The Retry No. should be reset to 1');
         Assert.AreEqual(Enum::"Email Status"::Queued, EmailOutboxTestPage.Status.AsInteger(), 'The Status should be reset to Queued');
-        // Assert.AreEqual('Test Subject4', EmailOutboxTestPage.Desc.Value(), 'The Description should be the same as the email subject');
         Assert.IsFalse(EmailOutboxTestPage.SendEmail.Enabled(), 'Send Email action should be disabled after sending the email');
         Assert.IsFalse(EmailOutboxTestPage.ShowRetryDetail.Enabled(), 'Show Retry Details action should be disabled after sending the email');
         Assert.IsFalse(EmailOutboxTestPage.ShowError.Enabled(), 'Show Error action should not be enabled for the first email outbox record because it doesn''t have any retry records');

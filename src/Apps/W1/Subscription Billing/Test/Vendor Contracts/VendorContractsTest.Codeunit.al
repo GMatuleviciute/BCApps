@@ -339,7 +339,6 @@ codeunit 148154 "Vendor Contracts Test"
     var
         EntryNo: Integer;
     begin
-        // Test: Subscription Line should be disconnected from the contract when the line type changes
         Initialize();
         SetupNewContract(false);
 
@@ -570,7 +569,6 @@ codeunit 148154 "Vendor Contracts Test"
     [HandlerFunctions('ExchangeRateSelectionModalPageHandler,MessageHandler')]
     procedure TestDeleteServiceCommitmentLinkedToContractLineIsClosed()
     begin
-        // Test: A closed Contract Line is deleted when deleting the Subscription Line
         Initialize();
         ContractTestLibrary.DeleteAllContractRecords();
         SetupServiceObjectForNewItemWithServiceCommitment(false);
@@ -594,7 +592,6 @@ codeunit 148154 "Vendor Contracts Test"
     [HandlerFunctions('ExchangeRateSelectionModalPageHandler,MessageHandler')]
     procedure TestDeleteServiceCommitmentLinkedToContractLineNotClosed()
     begin
-        // Test: Subscription Line cannot be deleted if an open contract line exists
         Initialize();
         ContractTestLibrary.DeleteAllContractRecords();
         SetupServiceObjectForNewItemWithServiceCommitment(false);

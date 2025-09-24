@@ -809,7 +809,6 @@ codeunit 134530 "No. Series Tests"
         NoSeriesCode: Code[20];
     begin
         // [Scenario] Make sure the Temp Current Sequence No. field cannot be abused and is always set to 0 upon database modify
-        // Note: These scenarios are not supported, this is simply to make sure the Temp Current Sequence No. field works as expected behind the scenes.
 
         Initialize();
         PermissionsMock.Set('No. Series - Admin');

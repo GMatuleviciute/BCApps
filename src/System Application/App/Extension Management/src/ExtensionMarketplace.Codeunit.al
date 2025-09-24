@@ -80,7 +80,6 @@ codeunit 2501 "Extension Marketplace"
         TempObject: DotNet JObject;
     begin
         // Extracts the telemetryUrl property, out of the data object, return by the AppSource site
-        // NOTE: the temp object is needed here. While JObject.Parse looks like a static call
         // to the JObject type, it will in fact reload and modify the underlying referenced object
         // as well as return the result of a 'parse'
         TempObject := TempObject.Parse(GetValue(JObject, 'data', false));

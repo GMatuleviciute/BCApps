@@ -163,7 +163,6 @@ codeunit 30250 "Shpfy Returns API"
         if Dispositions.Count = 0 then
             exit;
 
-        // If dispositions have different locations (Item was restocked to multiple locations), 
         // we cannot determine the return location for the line
         Dispositions.Get(0, Disposition);
         LocationId := JsonHelper.GetValueAsBigInteger(Disposition, 'location.legacyResourceId');
@@ -174,7 +173,6 @@ codeunit 30250 "Shpfy Returns API"
         if ReturnLocations.ContainsKey(OrderLineId) then begin
             if LocationId <> ReturnLocations.Get(OrderLineId) then begin
                 Session.LogMessage('0000P74', StrSubstNo(OrderLineMultipleLocMsg, OrderLineId, LocationId, ReturnLocations.Get(OrderLineId)), Verbosity::Warning, DataClassification::SystemMetadata, TelemetryScope::ExtensionPublisher, 'Category', CategoryTok);
-                // If the location is different, we cannot determine the return location for the line (same item from different return lines stocked to different locations)
                 ReturnLocations.Remove(OrderLineId);
             end;
             exit;

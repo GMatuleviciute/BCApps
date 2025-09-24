@@ -341,7 +341,6 @@ codeunit 138707 "Record Reference Interf. Test"
         RecordRef.Open(Database::"Record Reference Test");
 
         // Exercise
-        //RecordRef.ChangeCompany(); // ? can we test this easily?
         RecordRef.GetTable(RecordReferenceTest);
         RecordRefDuplicate := RecordRef.Duplicate();
         RecordRef.Copy(RecordReferenceTest2);

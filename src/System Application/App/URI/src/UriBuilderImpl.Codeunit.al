@@ -147,12 +147,10 @@ codeunit 3062 "Uri Builder Impl."
         KeysCount: Integer;
         KeysIndex: Integer;
     begin
-        // NOTE: ParseQueryString returns the value unencoded
         NameValueCollection := HttpUtility.ParseQueryString(QueryString);
         KeysCount := NameValueCollection.Count();
 
         for KeysIndex := 0 to KeysCount - 1 do
-            // Flags (e.g. 'foo' and 'bar' in '?foo&bar') are all grouped under a null key.
             if IsNull(NameValueCollection.GetKey(KeysIndex)) then
                 foreach QueryValue in NameValueCollection.GetValues(KeysIndex) do
                     Flags.Add(QueryValue) // No easy way to convert DotNet Array to AL List
@@ -324,7 +322,6 @@ codeunit 3062 "Uri Builder Impl."
         // "$" is reserved but has currently no meaning in query strings (i.e. it's safe to leave unencoded). Some servers don't recognize encoded
         // OData parameter keys (such as "%24filter"), hence this function.
 
-        // Notice: even though parameters such as "$filter" and "$expand" will include "$" (and "(", ")", " ", ...) in the parameter value as well, we
         // assume the server will decode these correctly, and limit this special encoding only for the OData parameters keys.
 
         EncodedParameterKey := Uri.EscapeDataString(ParameterKey);

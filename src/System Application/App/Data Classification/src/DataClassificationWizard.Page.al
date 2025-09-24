@@ -39,7 +39,6 @@ page 1752 "Data Classification Wizard"
                 {
                     Caption = 'Classifications include:';
                     //The GridLayout property is only supported on controls of type Grid
-                    //GridLayout = Rows;
                     label("- Sensitive - Private data, such as political or religious beliefs.")
                     {
                         ApplicationArea = All;
@@ -172,7 +171,6 @@ page 1752 "Data Classification Wizard"
                     group(Control53)
                     {
                         //The GridLayout property is only supported on controls of type Grid
-                        //GridLayout = Columns;
                         ShowCaption = false;
                         field(LedgerEntriesDefaultClassification; LedgerEntriesDefaultClassifications)
                         {

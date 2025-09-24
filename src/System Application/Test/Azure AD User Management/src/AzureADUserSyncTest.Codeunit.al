@@ -324,7 +324,6 @@ codeunit 132928 "Azure AD User Sync Test"
         AzureADPlan: Codeunit "Azure AD Plan";
         PlanIds: Codeunit "Plan Ids";
         GraphUserEssential: DotNet UserInfo;
-        // NullIEnumerable: DotNet GenericList1;
         GroupNameTxt: Label 'Group with members';
     begin
         Initialize();
@@ -375,7 +374,6 @@ codeunit 132928 "Azure AD User Sync Test"
         AzureADPlan: Codeunit "Azure AD Plan";
         PlanIds: Codeunit "Plan Ids";
         GraphUserInternalAdmin: DotNet UserInfo;
-        // NullIEnumerable: DotNet GenericList1;
         GroupNameTxt: Label 'Group with members';
     begin
         Initialize();
@@ -412,7 +410,6 @@ codeunit 132928 "Azure AD User Sync Test"
         AzureADPlan: Codeunit "Azure AD Plan";
         PlanIds: Codeunit "Plan Ids";
         GraphUserD365Admin: DotNet UserInfo;
-        // NullIEnumerable: DotNet GenericList1;
         GroupNameTxt: Label 'Group with members';
     begin
         Initialize();
@@ -816,7 +813,6 @@ codeunit 132928 "Azure AD User Sync Test"
         GraphUserEssential, GraphUserSecondEssential : DotNet UserInfo;
     begin
         // Can't have TransactionModel::AutoRollback + CommitBehavior::Ignore, because isolated events only work
-        // if at the moment of raising we are not in the write transaction (which is achieved by calling Commit())
         Initialize();
 
         // [GIVEN] Users with different licenses are present in Azure AD and have corresponding users in BC
@@ -844,7 +840,6 @@ codeunit 132928 "Azure AD User Sync Test"
         // [THEN] The error does not happen. If a user had errors for one of the updates,
         // then all updates for that users are skipped, and it does not affect the updates for other users
         LibraryAssert.AreEqual(1, AzureADUserSyncImpl.ApplyUpdatesFromAzureGraph(TempAzureADUserUpdateBuffer), 'Expected only one update to be applied.');
-        // LibraryAssert.ExpectedError(StrSubstNo(MixedPlansNonAdminErr, EssentialEmailTxt, PremiumEmailTxt));
 
         // Verify the updated user
         User.SetRange("Authentication Email", EssentialEmailTxt);

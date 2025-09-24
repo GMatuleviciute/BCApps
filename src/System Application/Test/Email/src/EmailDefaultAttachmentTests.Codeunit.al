@@ -23,7 +23,6 @@ codeunit 134853 "Email Default Attachment Tests"
         Assert: Codeunit "Library Assert";
         ConnectorMock: Codeunit "Connector Mock";
         EmailScenarioMock: Codeunit "Email Scenario Mock";
-        // Email: Codeunit Email;
         EmailScenario: Codeunit "Email Scenario";
         EmailScenarioAttachImpl: Codeunit "Email Scenario Attach Impl.";
         PermissionsMock: Codeunit "Permissions Mock";
@@ -294,7 +293,6 @@ codeunit 134853 "Email Default Attachment Tests"
     procedure AddAttachment(AttachmentName: Text[250]; AttachmentInStream: InStream; Scenario: Enum "Email Scenario"; Status: Boolean)
     var
         EmailScenarioAttachments: Record "Email Scenario Attachments";
-    // EmailAttachment: Record "Email Attachments";
     begin
         EmailScenarioAttachments."Attachment Name" := AttachmentName;
         EmailScenarioAttachments."Email Attachment".ImportStream(AttachmentInStream, AttachmentName);

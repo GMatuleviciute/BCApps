@@ -579,7 +579,6 @@ codeunit 134531 "No. Series Batch Tests"
         NoSeriesCode: Code[20];
         i: Integer;
     begin
-        // Scenario: Make sure the database sequence is not updated when calling batch simulation
         Initialize();
         PermissionsMock.Set('No. Series - Admin');
 
@@ -629,7 +628,6 @@ codeunit 134531 "No. Series Batch Tests"
         NoSeriesCode: Code[20];
         i: Integer;
     begin
-        // Scenario: Make sure the database sequence is not updated when calling batch simulation
         Initialize();
         PermissionsMock.Set('No. Series - Admin');
 
@@ -883,7 +881,6 @@ codeunit 134531 "No. Series Batch Tests"
         NoSeriesCode: Code[20];
     begin
         // [Scenario] Make sure the Temp Current Sequence No. field cannot be abused and is always set to 0 upon database modify
-        // Note: These scenarios are not supported, this is simply to make sure the Temp Current Sequence No. field works as expected behind the scenes.
 
         Initialize();
         PermissionsMock.Set('No. Series - Admin');

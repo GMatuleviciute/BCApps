@@ -615,7 +615,6 @@ codeunit 148155 "Contracts Test"
         ServiceObject: Record "Subscription Header";
         EntryNo: Integer;
     begin
-        // Test: Subscription Line should be disconnected from the contract when the line type changes
         Initialize();
 
         SetupNewContract(false, ServiceObject, CustomerContract);
@@ -1387,7 +1386,6 @@ codeunit 148155 "Contracts Test"
         ServiceCommitment: Record "Subscription Line";
         ServiceObject: Record "Subscription Header";
     begin
-        // Test: Subscription Line cannot be deleted if an open contract line exists
         Initialize();
 
         SetupServiceObjectForNewItemWithServiceCommitment(Customer, ServiceObject, false);
@@ -1413,7 +1411,6 @@ codeunit 148155 "Contracts Test"
         ServiceCommitment: Record "Subscription Line";
         ServiceObject: Record "Subscription Header";
     begin
-        // Test: A closed Contract Line is deleted when deleting the Subscription Line
         Initialize();
 
         SetupServiceObjectForNewItemWithServiceCommitment(Customer, ServiceObject, false);

@@ -17,7 +17,6 @@ table 1470 "Product Video Buffer"
     InherentEntitlements = rX;
     InherentPermissions = rX;
 #pragma warning restore AS0034
-    //TableType = Temporary; // need to fix AS0034 and AS0039 first
 
     fields
     {

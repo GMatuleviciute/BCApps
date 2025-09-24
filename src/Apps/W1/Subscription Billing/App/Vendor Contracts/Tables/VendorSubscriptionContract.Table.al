@@ -203,7 +203,6 @@ table 8063 "Vendor Subscription Contract"
             else
             if ("Pay-to Country/Region Code" = filter(<> '')) "Post Code".City where("Country/Region Code" = field("Pay-to Country/Region Code"));
             //This property is currently not supported
-            //TestTableRelation = false;
             ValidateTableRelation = false;
 
             trigger OnLookup()
@@ -369,7 +368,6 @@ table 8063 "Vendor Subscription Contract"
             else
             if ("Buy-from Country/Region Code" = filter(<> '')) "Post Code".City where("Country/Region Code" = field("Buy-from Country/Region Code"));
             //This property is currently not supported
-            //TestTableRelation = false;
             ValidateTableRelation = false;
 
             trigger OnLookup()
@@ -424,7 +422,6 @@ table 8063 "Vendor Subscription Contract"
             else
             if ("Pay-to Country/Region Code" = filter(<> '')) "Post Code" where("Country/Region Code" = field("Pay-to Country/Region Code"));
             //This property is currently not supported
-            //TestTableRelation = false;
             ValidateTableRelation = false;
 
             trigger OnLookup()
@@ -476,7 +473,6 @@ table 8063 "Vendor Subscription Contract"
             else
             if ("Buy-from Country/Region Code" = filter(<> '')) "Post Code" where("Country/Region Code" = field("Buy-from Country/Region Code"));
             //This property is currently not supported
-            //TestTableRelation = false;
             ValidateTableRelation = false;
 
             trigger OnLookup()

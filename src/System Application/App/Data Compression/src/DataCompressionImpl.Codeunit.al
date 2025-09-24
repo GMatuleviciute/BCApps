@@ -147,8 +147,6 @@ codeunit 421 "Data Compression Impl."
 
         // from GZIP file format specification version 4.3
         // Member header and trailer
-        // ID1 (IDentification 1)
-        // ID2 (IDentification 2)
         // These have the fixed values ID1 = 31 (0x1f, \037), ID2 = 139 (0x8b, \213), to identify the file as being in gzip format.
 
         OriginalStream.Position := 0;

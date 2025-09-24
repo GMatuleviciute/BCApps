@@ -26,7 +26,6 @@ codeunit 135017 "Security Groups Upgrade Test"
         SecurityGroup: Codeunit "Security Group";
         SecurityGroupsTestLibrary: Codeunit "Security Groups Test Library";
     begin
-        // Note: this cannot be a part of upgrade tests, as it inserts user records
 
         // [GIVEN] Windows group users have been set up in the past
         SetupWindowsGroupUsers();

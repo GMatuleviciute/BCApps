@@ -51,7 +51,6 @@ codeunit 134934 "Manual Setup Test"
         // [Then] Verify that the first registered setup is present on the page
         ManualSetupPage.Filter.SetFilter(Title, TestBusinessSetupNameTxt);
         ManualSetupPage.First();
-        //ManualSetupPage.GoToKey(TestBusinessSetupNameTxt);
 
         Assert.AreEqual(TestBusinessSetupNameTxt, ManualSetupPage.Name.Value(), 'Page with given name is not found');
         Assert.AreEqual(TestBusinessSetupDescriptionTxt, ManualSetupPage.Description.Value(), 'Page description is not correct');

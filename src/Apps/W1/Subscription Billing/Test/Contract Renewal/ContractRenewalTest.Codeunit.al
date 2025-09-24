@@ -58,7 +58,6 @@ codeunit 139692 "Contract Renewal Test"
         SalesQuoteNo: Code[20];
         NoOfSalesQuotes: array[2] of Integer;
     begin
-        // Test: Create a Contract Renewal Quote and verify Header & Lines
         Initialize();
         CreateBaseData();
 
@@ -103,7 +102,6 @@ codeunit 139692 "Contract Renewal Test"
         CreateContractRenewal: Codeunit "Create Sub. Contract Renewal";
         NoOfSalesQuotes: array[2] of Integer;
     begin
-        // Test: Create multiple Contract Renewal Quotes
         Initialize();
         DeleteAllContracts();
 
@@ -150,7 +148,6 @@ codeunit 139692 "Contract Renewal Test"
         SalesQuoteTestPage: TestPage "Sales Quote";
     begin
         Initialize();
-        // Test: Changes in Header & Sales Line should be disallowed
         ContractTestLibrary.CreateCustomer(Customer);
         CreateFakeContractRenewalQuote(SalesHeader);
         Commit(); // retain data after asserterror
@@ -175,7 +172,6 @@ codeunit 139692 "Contract Renewal Test"
         FromDocType: Enum "Sales Document Type From";
     begin
         Initialize();
-        // Test: Copying a Contract Renewal Quote will be allowed
         // No Subscription lines will be copied
         CreateFakeContractRenewalQuote(SalesHeader);
 
@@ -206,7 +202,6 @@ codeunit 139692 "Contract Renewal Test"
         EndDateErr: Label 'The new Subscription Line End Date should be %1 + %2', Locked = true;
     begin
         Initialize();
-        // Test: End Date of Subscription Line should be calculated according new Renewal Term
         // Create only one Subscription Line with initial term 1Y and subsequent term 1Y
         CreateBaseData(false, true, 1, 0); // ExchangeRateSelectionModalPageHandler, MessageHandler
 
@@ -250,7 +245,6 @@ codeunit 139692 "Contract Renewal Test"
         ServiceCommitment: Record "Subscription Line";
     begin
         Initialize();
-        // Test: Values of Contract Renewal Lines should match with their source (Subscription Lines)
         CreateBaseData();
 
         ServiceObject.TestField("No.");
@@ -277,7 +271,6 @@ codeunit 139692 "Contract Renewal Test"
         ServiceCommitment: Record "Subscription Line";
     begin
         Initialize();
-        // Test: Check if Subscription Lines (Partner Customer, Customer + Vendor) are inserted as Contract Renewal Lines
         CreateBaseData();
         Commit(); // close transaction before report is called
 
@@ -308,7 +301,6 @@ codeunit 139692 "Contract Renewal Test"
         SalesQuoteNo: Code[20];
     begin
         Initialize();
-        // Test: Create a Contract Renewal Quote and verify that the order if the sales lines is identical the contract lines
         CreateBaseData();
 
         ReSortContractLines();
@@ -333,7 +325,6 @@ codeunit 139692 "Contract Renewal Test"
         NewRenewalTerm: DateFormula;
     begin
         Initialize();
-        // Test: Price in Contract Renewal Lines of Sales Quote should be calculated properly
         CreateBaseData();
 
         Evaluate(NewRenewalTerm, '<10D>');
@@ -357,7 +348,6 @@ codeunit 139692 "Contract Renewal Test"
         CustomerContractPage: TestPage "Customer Contract";
     begin
         Initialize();
-        // Test: Renewal Term is
         // a) changeable from the Contract Renewal Action,
         // b) transferred back into the Subscription Lines and
         // c) synchronized to the Vendor Subscription Line
@@ -428,7 +418,6 @@ codeunit 139692 "Contract Renewal Test"
         SalesHeader: Record "Sales Header";
     begin
         Initialize();
-        // Test: Regular conversion to Sales Invoice should be blocked
 
         CreateFakeContractRenewalQuote(SalesHeader);
         SalesHeader.SetRecFilter();
@@ -494,7 +483,6 @@ codeunit 139692 "Contract Renewal Test"
         LibrarySales: Codeunit "Library - Sales";
     begin
         Initialize();
-        // Test: Post a Contract Renewal Quote and verify Result
         CreateBaseData();
 
         SalesHeader.Get(SalesHeader."Document Type"::Quote, CreateSalesQuoteFromContract()); // SelectContractRenewalHandler
@@ -549,7 +537,6 @@ codeunit 139692 "Contract Renewal Test"
         ReferenceDate: Date;
     begin
         Initialize();
-        // Test: Post a Contract Renewal Quote and verify Result
         CreateBaseData();
 
         SalesHeader.Get(SalesHeader."Document Type"::Quote, CreateSalesQuoteFromContract()); // SelectContractRenewalHandler

@@ -95,7 +95,6 @@ codeunit 135135 "Image Tests"
         Image.FromBase64(ImageAsBase64Txt);
 
         // [When] decode image back to base64 without any errors
-        // Note: The encoding is not the same each time, and that is why we dont compare it to the input
         ClearLastError();
         Base64Text := Image.ToBase64();
 

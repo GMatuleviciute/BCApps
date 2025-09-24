@@ -1112,7 +1112,6 @@ codeunit 148157 "Service Object Test"
         ServiceObjectPage.OpenEdit();
         ServiceObjectPage.GoToRecord(ServiceObject);
         ServiceObjectPage.AssignServices.Invoke();
-        // ServiceObjectPage.Close();
 
         ServiceCommitment.Reset();
         ServiceCommitment.SetRange("Subscription Header No.", ServiceObject."No.");

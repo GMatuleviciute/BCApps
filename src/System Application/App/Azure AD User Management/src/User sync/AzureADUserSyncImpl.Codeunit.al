@@ -236,7 +236,6 @@ codeunit 9029 "Azure AD User Sync Impl."
         end;
     end;
 
-    // If the user's plans are any of the following:
     // - Internal Administrator (Global Administrator or Dynamics 365 Administrator or BC Administrator)
     // - Microsoft 365
     // - Internal Administrator + Microsoft 365
@@ -335,7 +334,6 @@ codeunit 9029 "Azure AD User Sync Impl."
         AzureADUserUpdate."Update Type" := Enum::"Azure AD Update Type"::Remove;
 
         AzureADUserUpdate."Authentication Object ID" := CopyStr(AzureADGraphUser.GetUserAuthenticationObjectId(User."User Security ID"), 1, MaxStrLen(AzureADUserUpdate."Authentication Object ID"));
-        // If for the user doesn't have an authentication object ID (imported user, application, cleared directly in the database), assign a random one to avoid duplicate key exception.
         if AzureADUserUpdate."Authentication Object ID" = '' then
             AzureADUserUpdate."Authentication Object ID" := Format(CreateGuid()) + '-GENERATED';
 

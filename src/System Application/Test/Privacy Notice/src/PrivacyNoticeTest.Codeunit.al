@@ -155,7 +155,6 @@ codeunit 132535 "Privacy Notice Test"
         LibraryAssert.RecordIsNotEmpty(PrivacyNotice);
 
         // [THEN] We are not in a write-transaction
-        // If we are in a write-transaction, then we cannot run a codeunit but will throw an error with an error message (the codeunit doesn't actually do anything)
         // This is important since ConfirmPrivacyNoticeApproval will open a page which it cannot if we are in a write-tranaction.
         // However opening pages in tests during write-transactions does work
         ClearLastError();

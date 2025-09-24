@@ -54,7 +54,6 @@ codeunit 135011 "Camera Test"
         Assert.IsTrue(WasGettingThePictureSuccessful, 'Getting a picture from camera should always be successful in tests.');
 
         // [Then] The name of the picture includes the current date in the format <Day,2>_<Month,2>_<Year4>.
-        // Note: the actual name will also include the current time,
         /// but not checking for it as the current second can potentially change during the test execution.
         Assert.IsTrue(PictureName.Contains(Format(CurrentDateTime(), 0, '<Day,2>_<Month,2>_<Year4>')), 'The picture name should include the current date.');
 

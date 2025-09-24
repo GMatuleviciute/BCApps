@@ -419,7 +419,6 @@ codeunit 148160 "Service Comm. Dimensions"
         ServiceCommitmentTemplate: Record "Sub. Package Line Template";
         ServiceObject: Record "Subscription Header";
     begin
-        // Test: When using a Invoicing Item, Dimensions on the Subscription Line should be merged between Subscription Item and Invoicing Item.
         // Invoicing Item Dimensions should be prioritized
         Initialize();
 

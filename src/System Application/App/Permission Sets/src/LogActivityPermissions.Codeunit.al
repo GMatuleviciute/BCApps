@@ -43,7 +43,6 @@ codeunit 9802 "Log Activity Permissions"
     var
         NullGuid: Guid;
     begin
-        // Note: Do not start any write transactions inside this method and do not make
         // any commits. This code is invoked on permission checks - where there may be
         // no transaction.
         if (ObjectId = Database::"Tenant Permission") and
