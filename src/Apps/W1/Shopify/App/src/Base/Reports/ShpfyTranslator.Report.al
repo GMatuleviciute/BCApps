@@ -7,6 +7,9 @@ namespace Microsoft.Integration.Shopify;
 
 using System.Globalization;
 
+/// <summary>
+/// Report Shpfy Translator (ID 30111).
+/// </summary>
 report 30111 "Shpfy Translator"
 {
     Caption = 'Shopify Translator';

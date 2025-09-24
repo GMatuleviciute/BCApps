@@ -5,6 +5,9 @@
 
 namespace Microsoft.Integration.Shopify;
 
+/// <summary>
+/// Enum Shpfy Logging Mode (ID 30141).
+/// </summary>
 enum 30141 "Shpfy Logging Mode"
 {
     Extensible = false;

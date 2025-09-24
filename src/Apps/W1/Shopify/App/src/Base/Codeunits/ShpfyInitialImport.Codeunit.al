@@ -9,6 +9,9 @@ using System.Threading;
 using Microsoft.Inventory.Item;
 using Microsoft.Sales.Customer;
 
+/// <summary>
+/// Codeunit Shpfy Initial Import (ID 30202).
+/// </summary>
 codeunit 30202 "Shpfy Initial Import"
 {
     Access = Internal;

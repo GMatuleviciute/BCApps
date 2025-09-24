@@ -7,6 +7,9 @@ namespace Microsoft.Integration.Shopify;
 
 using Microsoft.Utilities;
 
+/// <summary>
+/// Codeunit Company Details Checklist Item (ID 30203).
+/// </summary>
 codeunit 30203 "Company Details Checklist Item"
 {
     Access = Internal;

@@ -7,6 +7,9 @@ namespace Microsoft.Integration.Shopify;
 
 using Microsoft.Inventory.Item;
 
+/// <summary>
+/// Codeunit Shpfy Checklist Item List (ID 30204).
+/// </summary>
 codeunit 30204 "Shpfy Checklist Item List"
 {
     trigger OnRun()

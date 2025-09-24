@@ -5,6 +5,9 @@
 
 namespace Microsoft.Integration.Shopify;
 
+/// <summary>
+/// Enum Shpfy Return Location Priority (ID 30162).
+/// </summary>
 enum 30162 "Shpfy Return Location Priority"
 {
     Access = Public;

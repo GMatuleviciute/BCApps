@@ -7,6 +7,9 @@ namespace Microsoft.Integration.Shopify;
 
 using System.Environment.Configuration;
 
+/// <summary>
+/// Codeunit Shpfy Shop Mgt. (ID 30211).
+/// </summary>
 codeunit 30211 "Shpfy Shop Mgt."
 {
     var

@@ -5,6 +5,9 @@
 
 namespace Microsoft.Integration.Shopify;
 
+/// <summary>
+/// Codeunit Shpfy Filter Mgt. (ID 30104).
+/// </summary>
 codeunit 30104 "Shpfy Filter Mgt."
 {
     Access = Internal;

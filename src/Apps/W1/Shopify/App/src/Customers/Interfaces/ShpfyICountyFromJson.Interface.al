@@ -5,6 +5,9 @@
 
 namespace Microsoft.Integration.Shopify;
 
+/// <summary>
+/// Interface Shpfy ICounty From Json.
+/// </summary>
 interface "Shpfy ICounty From Json"
 {
     Access = Internal;

@@ -11,6 +11,9 @@ using System.Environment.Configuration;
 using System.Upgrade;
 using System.Visualization;
 
+/// <summary>
+/// Codeunit Shpfy Installer (ID 30273).
+/// </summary>
 codeunit 30273 "Shpfy Installer"
 {
     Subtype = Install;
