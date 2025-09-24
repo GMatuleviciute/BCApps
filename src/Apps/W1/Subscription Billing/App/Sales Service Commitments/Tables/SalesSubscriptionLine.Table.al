@@ -1,3 +1,8 @@
+// ------------------------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+// ------------------------------------------------------------------------------------------------
+
 namespace Microsoft.SubscriptionBilling;
 
 using Microsoft.Inventory.Item;
@@ -6,6 +11,9 @@ using Microsoft.Sales.Pricing;
 using Microsoft.Finance.Currency;
 using Microsoft.Finance.SalesTax;
 
+/// <summary>
+/// Table Sales Subscription Line (ID 8068).
+/// </summary>
 table 8068 "Sales Subscription Line"
 {
     DataClassification = CustomerContent;

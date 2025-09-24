@@ -1,8 +1,16 @@
+// ------------------------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+// ------------------------------------------------------------------------------------------------
+
 namespace Microsoft.SubscriptionBilling;
 
 using Microsoft.Sales.Document;
 using Microsoft.Utilities;
 
+/// <summary>
+/// Page Sales Service Commitments List (ID 8015).
+/// </summary>
 page 8015 "Sales Service Commitments List"
 {
     ApplicationArea = All;
