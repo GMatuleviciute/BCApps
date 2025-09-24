@@ -400,9 +400,7 @@ codeunit 30161 "Shpfy Import Order"
             LastName := JsonHelper.GetValueAsText(JOrder, 'customer.lastName');
         OrderHeaderRecordRef.Field(OrderHeader.FieldNo("Sell-to First Name")).Value := CopyStr(FirstName, 1, MaxStrLen(OrderHeader."Sell-to First Name"));
         OrderHeaderRecordRef.Field(OrderHeader.FieldNo("Sell-to Last Name")).Value := CopyStr(LastName, 1, MaxStrLen(OrderHeader."Sell-to Last Name"));
-        OrderHeaderRecordRef.Field(OrderHeader.FieldNo("Sell-to Customer Name")).Value := CopyStr(GetName(FirstName, LastName, CompanyName), 1, MaxStrLen(OrderHeader."Sell-to Customer Name"));
-        OrderHeaderRecordRef.Field(OrderHeader.FieldNo("Sell-to Customer Name 2")).Value := CopyStr(GetName2(FirstName, LastName, CompanyName), 1, MaxStrLen(OrderHeader."Sell-to Customer Name 2"));
-        OrderHeaderRecordRef.Field(OrderHeader.FieldNo("Sell-to Contact Name")).Value := CopyStr(GetContactName(FirstName, LastName, CompanyName), 1, MaxStrLen(OrderHeader."Sell-to Contact Name"));
+        SetCustomerNamesInAlphabeticalOrder(OrderHeaderRecordRef, OrderHeader, FirstName, LastName, CompanyName, 'Sell-to');
         JsonHelper.GetValueIntoField(JOrder, 'displayAddress.address1', OrderHeaderRecordRef, OrderHeader.FieldNo("Sell-to Address"));
         JsonHelper.GetValueIntoField(JOrder, 'displayAddress.address2', OrderHeaderRecordRef, OrderHeader.FieldNo("Sell-to Address 2"));
         JsonHelper.GetValueIntoField(JOrder, 'displayAddress.city', OrderHeaderRecordRef, OrderHeader.FieldNo("Sell-to City"));
@@ -435,9 +433,7 @@ codeunit 30161 "Shpfy Import Order"
             LastName := JsonHelper.GetValueAsText(JOrder, 'customer.lastName');
         OrderHeaderRecordRef.Field(OrderHeader.FieldNo("Ship-to First Name")).Value := CopyStr(FirstName, 1, MaxStrLen(OrderHeader."Ship-to First Name"));
         OrderHeaderRecordRef.Field(OrderHeader.FieldNo("Ship-to Last Name")).Value := CopyStr(LastName, 1, MaxStrLen(OrderHeader."Ship-to Last Name"));
-        OrderHeaderRecordRef.Field(OrderHeader.FieldNo("Ship-to Name")).Value := CopyStr(GetName(FirstName, LastName, CompanyName), 1, MaxStrLen(OrderHeader."Ship-to Name"));
-        OrderHeaderRecordRef.Field(OrderHeader.FieldNo("Ship-to Name 2")).Value := CopyStr(GetName2(FirstName, LastName, CompanyName), 1, MaxStrLen(OrderHeader."Ship-to Name 2"));
-        OrderHeaderRecordRef.Field(OrderHeader.FieldNo("Ship-to Contact Name")).Value := CopyStr(GetContactName(FirstName, LastName, CompanyName), 1, MaxStrLen(OrderHeader."Ship-to Contact Name"));
+        SetCustomerNamesInAlphabeticalOrder(OrderHeaderRecordRef, OrderHeader, FirstName, LastName, CompanyName, 'Ship-to');
         JsonHelper.GetValueIntoField(JOrder, 'shippingAddress.address1', OrderHeaderRecordRef, OrderHeader.FieldNo("Ship-to Address"));
         JsonHelper.GetValueIntoField(JOrder, 'shippingAddress.address2', OrderHeaderRecordRef, OrderHeader.FieldNo("Ship-to Address 2"));
         JsonHelper.GetValueIntoField(JOrder, 'shippingAddress.city', OrderHeaderRecordRef, OrderHeader.FieldNo("Ship-to City"));
@@ -463,9 +459,7 @@ codeunit 30161 "Shpfy Import Order"
             LastName := JsonHelper.GetValueAsText(JOrder, 'customer.lastName');
         OrderHeaderRecordRef.Field(OrderHeader.FieldNo("Bill-to First Name")).Value := CopyStr(FirstName, 1, MaxStrLen(OrderHeader."Bill-to First Name"));
         OrderHeaderRecordRef.Field(OrderHeader.FieldNo("Bill-to Lastname")).Value := CopyStr(LastName, 1, MaxStrLen(OrderHeader."Bill-to Lastname"));
-        OrderHeaderRecordRef.Field(OrderHeader.FieldNo("Bill-to Name")).Value := CopyStr(GetName(FirstName, LastName, CompanyName), 1, MaxStrLen(OrderHeader."Bill-to Name"));
-        OrderHeaderRecordRef.Field(OrderHeader.FieldNo("Bill-to Name 2")).Value := CopyStr(GetName2(FirstName, LastName, CompanyName), 1, MaxStrLen(OrderHeader."Bill-to Name 2"));
-        OrderHeaderRecordRef.Field(OrderHeader.FieldNo("Bill-to Contact Name")).Value := CopyStr(GetContactName(FirstName, LastName, CompanyName), 1, MaxStrLen(OrderHeader."Bill-to Contact Name"));
+        SetCustomerNamesInAlphabeticalOrder(OrderHeaderRecordRef, OrderHeader, FirstName, LastName, CompanyName, 'Bill-to');
         JsonHelper.GetValueIntoField(JOrder, 'billingAddress.address1', OrderHeaderRecordRef, OrderHeader.FieldNo("Bill-to Address"));
         JsonHelper.GetValueIntoField(JOrder, 'billingAddress.address2', OrderHeaderRecordRef, OrderHeader.FieldNo("Bill-to Address 2"));
         JsonHelper.GetValueIntoField(JOrder, 'billingAddress.city', OrderHeaderRecordRef, OrderHeader.FieldNo("Bill-to City"));
@@ -945,5 +939,105 @@ codeunit 30161 "Shpfy Import Order"
             exit(Enum::"Shpfy Order Return Status".FromInteger(Enum::"Shpfy Order Return Status".Ordinals().Get(Enum::"Shpfy Order Return Status".Names().IndexOf(Value))))
         else
             exit(Enum::"Shpfy Order Return Status"::" ");
+    end;
+
+    /// <summary>
+    /// Set customer names in alphabetical order to ensure consistent sorting.
+    /// </summary>
+    /// <param name="OrderHeaderRecordRef">Parameter of type RecordRef.</param>
+    /// <param name="OrderHeader">Parameter of type Record "Shpfy Order Header".</param>
+    /// <param name="FirstName">Parameter of type Text.</param>
+    /// <param name="LastName">Parameter of type Text.</param>
+    /// <param name="CompanyName">Parameter of type Text.</param>
+    /// <param name="NamePrefix">Parameter of type Text.</param>
+    local procedure SetCustomerNamesInAlphabeticalOrder(var OrderHeaderRecordRef: RecordRef; var OrderHeader: Record "Shpfy Order Header"; FirstName: Text; LastName: Text; CompanyName: Text; NamePrefix: Text)
+    var
+        NamesList: List of [Text];
+        Name1, Name2, ContactName: Text;
+        SortedNames: List of [Text];
+        CustomerNameFieldNo, CustomerName2FieldNo, ContactNameFieldNo: Integer;
+    begin
+        // Generate the three possible names
+        Name1 := GetName(FirstName, LastName, CompanyName);
+        Name2 := GetName2(FirstName, LastName, CompanyName);
+        ContactName := GetContactName(FirstName, LastName, CompanyName);
+
+        // Add non-empty names to the list for sorting
+        if Name1 <> '' then
+            NamesList.Add(Name1);
+        if Name2 <> '' then
+            NamesList.Add(Name2);
+        if ContactName <> '' then
+            NamesList.Add(ContactName);
+
+        // Sort the names alphabetically
+        SortedNames := SortTextListAlphabetically(NamesList);
+
+        // Get field numbers based on prefix
+        case NamePrefix of
+            'Sell-to':
+                begin
+                    CustomerNameFieldNo := OrderHeader.FieldNo("Sell-to Customer Name");
+                    CustomerName2FieldNo := OrderHeader.FieldNo("Sell-to Customer Name 2");
+                    ContactNameFieldNo := OrderHeader.FieldNo("Sell-to Contact Name");
+                end;
+            'Ship-to':
+                begin
+                    CustomerNameFieldNo := OrderHeader.FieldNo("Ship-to Name");
+                    CustomerName2FieldNo := OrderHeader.FieldNo("Ship-to Name 2");
+                    ContactNameFieldNo := OrderHeader.FieldNo("Ship-to Contact Name");
+                end;
+            'Bill-to':
+                begin
+                    CustomerNameFieldNo := OrderHeader.FieldNo("Bill-to Name");
+                    CustomerName2FieldNo := OrderHeader.FieldNo("Bill-to Name 2");
+                    ContactNameFieldNo := OrderHeader.FieldNo("Bill-to Contact Name");
+                end;
+        end;
+
+        // Assign sorted names to fields
+        if SortedNames.Count >= 1 then
+            OrderHeaderRecordRef.Field(CustomerNameFieldNo).Value := CopyStr(SortedNames.Get(1), 1, 50);
+        if SortedNames.Count >= 2 then
+            OrderHeaderRecordRef.Field(CustomerName2FieldNo).Value := CopyStr(SortedNames.Get(2), 1, 50);
+        if SortedNames.Count >= 3 then
+            OrderHeaderRecordRef.Field(ContactNameFieldNo).Value := CopyStr(SortedNames.Get(3), 1, 50);
+    end;
+
+    /// <summary>
+    /// Sort a list of text values alphabetically.
+    /// </summary>
+    /// <param name="InputList">Parameter of type List of [Text].</param>
+    /// <returns>Return variable "List of [Text]".</returns>
+    local procedure SortTextListAlphabetically(InputList: List of [Text]) OutputList: List of [Text]
+    var
+        TempText: Text;
+        i, j: Integer;
+        TextArray: array[10] of Text;
+        ArraySize: Integer;
+    begin
+        Clear(OutputList);
+        if InputList.Count = 0 then
+            exit(OutputList);
+
+        // Convert list to array for easier sorting
+        ArraySize := InputList.Count;
+        for i := 1 to ArraySize do
+            TextArray[i] := InputList.Get(i);
+
+        // Simple bubble sort
+        for i := 1 to ArraySize - 1 do
+            for j := 1 to ArraySize - i do
+                if TextArray[j] > TextArray[j + 1] then begin
+                    TempText := TextArray[j];
+                    TextArray[j] := TextArray[j + 1];
+                    TextArray[j + 1] := TempText;
+                end;
+
+        // Convert back to list
+        for i := 1 to ArraySize do
+            OutputList.Add(TextArray[i]);
+
+        exit(OutputList);
     end;
 }
