@@ -997,11 +997,32 @@ codeunit 30161 "Shpfy Import Order"
 
         // Assign sorted names to fields
         if SortedNames.Count >= 1 then
-            OrderHeaderRecordRef.Field(CustomerNameFieldNo).Value := CopyStr(SortedNames.Get(1), 1, 50);
+            case NamePrefix of
+                'Sell-to':
+                    OrderHeaderRecordRef.Field(CustomerNameFieldNo).Value := CopyStr(SortedNames.Get(1), 1, MaxStrLen(OrderHeader."Sell-to Customer Name"));
+                'Ship-to':
+                    OrderHeaderRecordRef.Field(CustomerNameFieldNo).Value := CopyStr(SortedNames.Get(1), 1, MaxStrLen(OrderHeader."Ship-to Name"));
+                'Bill-to':
+                    OrderHeaderRecordRef.Field(CustomerNameFieldNo).Value := CopyStr(SortedNames.Get(1), 1, MaxStrLen(OrderHeader."Bill-to Name"));
+            end;
         if SortedNames.Count >= 2 then
-            OrderHeaderRecordRef.Field(CustomerName2FieldNo).Value := CopyStr(SortedNames.Get(2), 1, 50);
+            case NamePrefix of
+                'Sell-to':
+                    OrderHeaderRecordRef.Field(CustomerName2FieldNo).Value := CopyStr(SortedNames.Get(2), 1, MaxStrLen(OrderHeader."Sell-to Customer Name 2"));
+                'Ship-to':
+                    OrderHeaderRecordRef.Field(CustomerName2FieldNo).Value := CopyStr(SortedNames.Get(2), 1, MaxStrLen(OrderHeader."Ship-to Name 2"));
+                'Bill-to':
+                    OrderHeaderRecordRef.Field(CustomerName2FieldNo).Value := CopyStr(SortedNames.Get(2), 1, MaxStrLen(OrderHeader."Bill-to Name 2"));
+            end;
         if SortedNames.Count >= 3 then
-            OrderHeaderRecordRef.Field(ContactNameFieldNo).Value := CopyStr(SortedNames.Get(3), 1, 50);
+            case NamePrefix of
+                'Sell-to':
+                    OrderHeaderRecordRef.Field(ContactNameFieldNo).Value := CopyStr(SortedNames.Get(3), 1, MaxStrLen(OrderHeader."Sell-to Contact Name"));
+                'Ship-to':
+                    OrderHeaderRecordRef.Field(ContactNameFieldNo).Value := CopyStr(SortedNames.Get(3), 1, MaxStrLen(OrderHeader."Ship-to Contact Name"));
+                'Bill-to':
+                    OrderHeaderRecordRef.Field(ContactNameFieldNo).Value := CopyStr(SortedNames.Get(3), 1, MaxStrLen(OrderHeader."Bill-to Contact Name"));
+            end;
     end;
 
     /// <summary>
