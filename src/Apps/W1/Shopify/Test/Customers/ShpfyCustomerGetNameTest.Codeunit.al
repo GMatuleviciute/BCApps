@@ -37,14 +37,14 @@ codeunit 139584 "Shpfy Customer GetName Test"
         // [GIVEN] "Shpfy Name Source"::FirstAndLastName
         // [GIVEN] FirstName, LastName and CompanyName
         ICustomerName := "Shpfy Name Source"::FirstAndLastName;
-        // [THEN] The rsult must be FirstName + ' ' + LastName
+        // [THEN] The result must be names sorted alphabetically (FirstName comes before LastName alphabetically)
         LibraryAssert.AreEqual(FirstNameLbl + ' ' + LastNameLbl, ICustomerName.GetName(FirstNameLbl, LastNameLbl, CompanyNameLbl), '"Shpfy Name Source"::FirstAndLastName');
 
         // [GIVEN] "Shpfy Name Source"::LastAndFirstName
         // [GIVEN] FirstName, LastName and CompanyName
         ICustomerName := "Shpfy Name Source"::LastAndFirstName;
-        // [THEN] The rsult must be LastName + ' ' + FirstName
-        LibraryAssert.AreEqual(LastNameLbl + ' ' + FirstNameLbl, ICustomerName.GetName(FirstNameLbl, LastNameLbl, CompanyNameLbl), '"Shpfy Name Source"::LastAndFirstName');
+        // [THEN] The result must be names sorted alphabetically (FirstName comes before LastName alphabetically)
+        LibraryAssert.AreEqual(FirstNameLbl + ' ' + LastNameLbl, ICustomerName.GetName(FirstNameLbl, LastNameLbl, CompanyNameLbl), '"Shpfy Name Source"::LastAndFirstName');
 
         // [GIVEN] "Shpfy Name Source"::None
         // [GIVEN] FirstName, LastName and CompanyName

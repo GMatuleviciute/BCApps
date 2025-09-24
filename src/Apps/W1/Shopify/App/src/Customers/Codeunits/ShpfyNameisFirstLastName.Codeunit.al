@@ -25,8 +25,23 @@ codeunit 30121 "Shpfy Name is First. LastName" implements "Shpfy ICustomer Name"
     var
         Customer: Record Customer;
         Name: Text;
+        TrimmedFirstName: Text;
+        TrimmedLastName: Text;
     begin
-        Name := FirstName.Trim() + ' ' + LastName.Trim();
+        TrimmedFirstName := FirstName.Trim();
+        TrimmedLastName := LastName.Trim();
+        
+        // Sort the names alphabetically before concatenation
+        if (TrimmedFirstName <> '') and (TrimmedLastName <> '') then begin
+            if TrimmedFirstName < TrimmedLastName then
+                Name := TrimmedFirstName + ' ' + TrimmedLastName
+            else
+                Name := TrimmedLastName + ' ' + TrimmedFirstName;
+        end else if TrimmedFirstName <> '' then
+            Name := TrimmedFirstName
+        else
+            Name := TrimmedLastName;
+            
         exit(CopyStr(Name.Trim(), 1, MaxStrLen(Customer.Name)));
     end;
 }
