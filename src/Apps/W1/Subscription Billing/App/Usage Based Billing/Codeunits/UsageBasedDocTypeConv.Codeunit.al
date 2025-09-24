@@ -1,8 +1,16 @@
+// ------------------------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+// ------------------------------------------------------------------------------------------------
+
 namespace Microsoft.SubscriptionBilling;
 
 using Microsoft.Sales.Document;
 using Microsoft.Purchases.Document;
 
+/// <summary>
+/// Codeunit Usage Based Doc. Type Conv. (ID 8024).
+/// </summary>
 codeunit 8024 "Usage Based Doc. Type Conv."
 {
     Access = Internal;
