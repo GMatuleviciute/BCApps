@@ -13,7 +13,7 @@ permissionset 6103 "E-Doc. Core - Basic"
 {
     Access = Public;
     Assignable = true;
-    Caption = 'E-Document - Basic';
+    Caption = 'E-Document - Basic'; //Locked=true;
     ObsoleteReason = 'Replaced by "E-Doc. Core - User" and "E-Doc. Core - Admin"';
     ObsoleteState = Pending;
     ObsoleteTag = '27.0';
