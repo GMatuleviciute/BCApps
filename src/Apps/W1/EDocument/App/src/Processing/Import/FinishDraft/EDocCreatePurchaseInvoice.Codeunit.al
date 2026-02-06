@@ -38,6 +38,7 @@ codeunit 6117 "E-Doc. Create Purchase Invoice" implements IEDocumentFinishDraft,
         TempPOMatchWarnings: Record "E-Doc PO Match Warning" temporary;
         EDocPOMatching: Codeunit "E-Doc. PO Matching";
         DocumentAttachmentMgt: Codeunit "Document Attachment Mgmt";
+        EDocAttachmentProcessor: Codeunit "E-Doc. Attachment Processor";
         IEDocumentFinishPurchaseDraft: Interface IEDocumentCreatePurchaseInvoice;
         YourMatchedLinesAreNotValidErr: Label 'The purchase invoice cannot be created because one or more of its matched lines are not valid matches. Review if your configuration allows for receiving at invoice.';
         SomeLinesNotYetReceivedErr: Label 'Some of the matched purchase order lines have not yet been received, you need to either receive the lines or remove the matches.';
@@ -69,6 +70,8 @@ codeunit 6117 "E-Doc. Create Purchase Invoice" implements IEDocumentFinishDraft,
         // Post document creation
         DocumentAttachmentMgt.CopyAttachments(EDocument, PurchaseHeader);
         DocumentAttachmentMgt.DeleteAttachedDocuments(EDocument);
+
+        EDocAttachmentProcessor.AttachToIncomingDocument(EDocument, PurchaseHeader);
 
         // Post document validation - Silently emit telemetry
         EDocImpSessionTelemetry.SetBool('Totals Validation', TryValidateDocumentTotals(PurchaseHeader));

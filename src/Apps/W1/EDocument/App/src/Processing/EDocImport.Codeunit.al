@@ -397,6 +397,7 @@ codeunit 6140 "E-Doc. Import"
     local procedure CreatePurchaseDocumentFromImportedDocument(var EDocument: Record "E-Document"; var EDocService: Record "E-Document Service"; var SourceDocumentHeader: RecordRef; var SourceDocumentLine: RecordRef; var EDocServiceStatus: Enum "E-Document Service Status"; PurchaseDocumentType: Enum "Purchase Document Type")
     var
         PurchHeader: Record "Purchase Header";
+        EDocAttachmentProcessor: Codeunit "E-Doc. Attachment Processor";
         DocumentHeader: RecordRef;
         ItemFound, UOMResolved : Boolean;
     begin
@@ -456,6 +457,8 @@ codeunit 6140 "E-Doc. Import"
         PurchHeader."Doc. Amount Incl. VAT" := EDocument."Amount Incl. VAT";
         PurchHeader."Doc. Amount VAT" := EDocument."Amount Incl. VAT" - EDocument."Amount Excl. VAT";
         PurchHeader.Modify();
+
+        EDocAttachmentProcessor.AttachToIncomingDocument(EDocument, PurchHeader);
 
         UpdateEDocumentRecordId(EDocument, DocumentHeader.Field(PurchHeader.FieldNo("No.")).Value(), DocumentHeader.RecordId);
         EDocServiceStatus := EDocServiceStatus::"Imported Document Created";

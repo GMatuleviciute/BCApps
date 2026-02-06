@@ -310,6 +310,16 @@ table 6103 "E-Document Service"
             DataClassification = SystemMetadata;
         }
         #endregion [60-80] are reserved for purchase draft document settings.
+        field(81; "Attach Sales E-Document"; Boolean)
+        {
+            Caption = 'Attach Sales E-Document';
+            ToolTip = 'Specifies whether the sales e-document should be attached.';
+        }
+        field(82; "Attach Purchase E-Document"; Boolean)
+        {
+            Caption = 'Attach Purchase E-Document';
+            ToolTip = 'Specifies whether the purchase e-document should be attached.';
+        }
     }
     keys
     {

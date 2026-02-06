@@ -154,6 +154,7 @@ codeunit 6102 "E-Doc. Export"
         EDocLog: Record "E-Document Log";
         EDocumentServiceStatus: Record "E-Document Service Status";
         EDocumentLog: Codeunit "E-Document Log";
+        EDocAttachmentProcessor: Codeunit "E-Doc. Attachment Processor";
         TempBlob: Codeunit "Temp Blob";
         SourceDocumentHeaderMapped, SourceDocumentLineMapped : RecordRef;
         SourceDocumentHeader, SourceDocumentLines : RecordRef;
@@ -167,8 +168,10 @@ codeunit 6102 "E-Doc. Export"
         ErrorCount := EDocumentErrorHelper.ErrorMessageCount(EDocument);
         CreateEDocument(EDocumentService, EDocument, SourceDocumentHeaderMapped, SourceDocumentLineMapped, TempBlob);
         Success := EDocumentErrorHelper.ErrorMessageCount(EDocument) = ErrorCount;
-        if Success then
-            EDocServiceStatus := Enum::"E-Document Service Status"::Exported
+        if Success then begin
+            EDocServiceStatus := Enum::"E-Document Service Status"::Exported;
+            EDocAttachmentProcessor.AttachIncomingDocumentOnExport(EDocumentService, EDocument, SourceDocumentHeader, TempBlob);
+        end
         else
             EDocServiceStatus := Enum::"E-Document Service Status"::"Export Error";
 

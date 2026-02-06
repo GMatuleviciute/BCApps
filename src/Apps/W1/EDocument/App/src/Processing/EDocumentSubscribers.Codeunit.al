@@ -31,6 +31,7 @@ using Microsoft.Service.History;
 using Microsoft.Service.Posting;
 using Microsoft.Utilities;
 using System.Automation;
+using System.EMail;
 using System.Reflection;
 using System.Telemetry;
 using System.Utilities;
@@ -508,6 +509,12 @@ codeunit 6103 "E-Document Subscribers"
     end;
 
     #endregion Send To Customer
+
+    [EventSubscriber(ObjectType::Table, Database::"Email Item", 'OnAttachIncomingDocumentsOnAfterSetFilter', '', false, false)]
+    local procedure ExcludeEDocumentsOnAttachIncomingDocumentsOnAfterSetFilter(var IncomingDocumentAttachment: Record "Incoming Document Attachment")
+    begin
+        IncomingDocumentAttachment.SetRange("Is E-Document", false);
+    end;
 
     local procedure IsEDocumentLinkedToPurchaseDocument(var EDocument: Record "E-Document"; OpenRecord: Variant): Boolean
     var
