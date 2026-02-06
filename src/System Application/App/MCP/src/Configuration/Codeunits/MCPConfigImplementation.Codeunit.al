@@ -37,6 +37,8 @@ codeunit 8351 "MCP Config Implementation"
         MCPConfigurationAuditCreatedLbl: Label 'MCP Configuration %1 created by user %2 in company %3', Comment = '%1 - configuration name, %2 - user security ID, %3 - company name', Locked = true;
         MCPConfigurationAuditModifiedLbl: Label 'MCP Configuration %1 modified by user %2 in company %3', Comment = '%1 - configuration name, %2 - user security ID, %3 - company name', Locked = true;
         MCPConfigurationAuditDeletedLbl: Label 'MCP Configuration %1 deleted by user %2 in company %3', Comment = '%1 - configuration name, %2 - user security ID, %3 - company name', Locked = true;
+        InvalidConfigurationWarningLbl: Label 'The configuration is invalid and may not work as expected. Do you want to review warnings before activating?';
+        ConfigValidLbl: Label 'No warnings found. The configuration is valid.';
         ConnectionStringLbl: Label '%1 Connection String', Comment = '%1 - configuration name';
         MCPUrlProdLbl: Label 'https://mcp.businesscentral.dynamics.com', Locked = true;
         MCPUrlTIELbl: Label 'https://mcp.businesscentral.dynamics-tie.com', Locked = true;
@@ -45,6 +47,12 @@ codeunit 8351 "MCP Config Implementation"
         VSCodeAppNameLbl: Label 'VS Code', Locked = true;
         VSCodeAppDescriptionLbl: Label 'Visual Studio Code';
         VSCodeClientIdLbl: Label 'aebc6443-996d-45c2-90f0-388ff96faa56', Locked = true;
+        ExportFileNameTxt: Label 'MCPConfig_%1_%2.json', Locked = true, Comment = '%1 = config name, %2 = date';
+        ExportTitleTxt: Label 'Export Configuration';
+        ImportTitleTxt: Label 'Import Configuration';
+        JsonFilterTxt: Label 'JSON Files (*.json)|*.json';
+        InvalidJsonErr: Label 'The selected file is not a valid configuration file.';
+        ConfigNameExistsMsg: Label 'A configuration with the name ''%1'' already exists. Please provide a different name.', Comment = '%1 = configuration name';
 
     #region Configurations
     internal procedure GetConfigurationIdByName(Name: Text[100]): Guid
@@ -249,22 +257,93 @@ codeunit 8351 "MCP Config Implementation"
         MCPConfiguration.Insert();
     end;
 
-    internal procedure CreateVSCodeEntraApplication()
-    var
-        MCPEntraApplication: Record "MCP Entra Application";
-    begin
-        if MCPEntraApplication.Get(VSCodeAppNameLbl) then
-            exit;
-
-        MCPEntraApplication.Name := VSCodeAppNameLbl;
-        MCPEntraApplication.Description := VSCodeAppDescriptionLbl;
-        Evaluate(MCPEntraApplication."Client ID", VSCodeClientIdLbl);
-        MCPEntraApplication.Insert();
-    end;
-
     internal procedure IsDefaultConfiguration(MCPConfiguration: Record "MCP Configuration"): Boolean
     begin
         exit(MCPConfiguration.Name = '');
+    end;
+
+    internal procedure IsConfigurationActive(ConfigId: Guid): Boolean
+    var
+        MCPConfiguration: Record "MCP Configuration";
+    begin
+        if MCPConfiguration.GetBySystemId(ConfigId) then
+            exit(MCPConfiguration.Active);
+        exit(false);
+    end;
+
+    internal procedure ValidateConfiguration(var MCPConfiguration: Record "MCP Configuration"; OnActivate: Boolean)
+    var
+        MCPConfigurationWarning: Record "MCP Config Warning";
+    begin
+        // Raise warning if any issues found
+        if not FindWarningsForConfiguration(MCPConfiguration.SystemId, MCPConfigurationWarning) then begin
+            if not OnActivate then
+                Message(ConfigValidLbl);
+            exit;
+        end;
+
+        if OnActivate then
+            if not Confirm(InvalidConfigurationWarningLbl) then
+                exit;
+
+        MCPConfiguration.Active := false;
+        Page.Run(Page::"MCP Config Warning List", MCPConfigurationWarning);
+    end;
+
+    internal procedure FindWarningsForConfiguration(ConfigId: Guid; var MCPConfigurationWarning: Record "MCP Config Warning"): Boolean
+    var
+        IMCPConfigWarning: Interface "MCP Config Warning";
+        MCPConfigWarningType: Enum "MCP Config Warning Type";
+        WarningImplementations: List of [Integer];
+        WarningImplementation: Integer;
+        EntryNo: Integer;
+    begin
+        if MCPConfigurationWarning.FindLast() then
+            EntryNo := MCPConfigurationWarning."Entry No." + 1
+        else
+            EntryNo := 1;
+
+        WarningImplementations := MCPConfigWarningType.Ordinals();
+        foreach WarningImplementation in WarningImplementations do begin
+            IMCPConfigWarning := "MCP Config Warning Type".FromInteger(WarningImplementation);
+            IMCPConfigWarning.CheckForWarnings(ConfigId, MCPConfigurationWarning, EntryNo);
+        end;
+
+        exit(not MCPConfigurationWarning.IsEmpty());
+    end;
+
+    internal procedure GetWarningMessage(MCPConfigWarning: Record "MCP Config Warning"): Text
+    var
+        IMCPConfigWarning: Interface "MCP Config Warning";
+    begin
+        IMCPConfigWarning := MCPConfigWarning."Warning Type";
+        exit(IMCPConfigWarning.WarningMessage(MCPConfigWarning));
+    end;
+
+    internal procedure GetRecommendedAction(MCPConfigWarning: Record "MCP Config Warning"): Text
+    var
+        IMCPConfigWarning: Interface "MCP Config Warning";
+    begin
+        IMCPConfigWarning := MCPConfigWarning."Warning Type";
+        exit(IMCPConfigWarning.RecommendedAction(MCPConfigWarning));
+    end;
+
+    internal procedure ApplyRecommendedActions(var MCPConfigWarning: Record "MCP Config Warning")
+    begin
+        if not MCPConfigWarning.FindSet() then
+            exit;
+
+        repeat
+            ApplyRecommendedAction(MCPConfigWarning);
+        until MCPConfigWarning.Next() = 0;
+    end;
+
+    internal procedure ApplyRecommendedAction(var MCPConfigWarning: Record "MCP Config Warning")
+    var
+        IMCPConfigWarning: Interface "MCP Config Warning";
+    begin
+        IMCPConfigWarning := MCPConfigWarning."Warning Type";
+        IMCPConfigWarning.ApplyRecommendedAction(MCPConfigWarning);
     end;
     #endregion
 
@@ -503,7 +582,7 @@ codeunit 8351 "MCP Config Implementation"
         until PageMetadata.Next() = 0;
     end;
 
-    local procedure CheckAPIToolExists(ConfigId: Guid; PageId: Integer): Boolean
+    internal procedure CheckAPIToolExists(ConfigId: Guid; PageId: Integer): Boolean
     var
         MCPConfigurationTool: Record "MCP Configuration Tool";
     begin
@@ -529,9 +608,43 @@ codeunit 8351 "MCP Config Implementation"
             exit(CopyStr(AllObjWithCaption."Object Name", 1, 100));
         exit('');
     end;
+
+    internal procedure LoadSystemTools(var MCPSystemTool: Record "MCP System Tool")
+    var
+        MCPUtilities: Codeunit "MCP Utilities";
+        SystemTools: Dictionary of [Text, Text];
+        ToolName: Text;
+    begin
+        MCPSystemTool.Reset();
+        MCPSystemTool.DeleteAll();
+
+        SystemTools := MCPUtilities.GetSystemToolsInDynamicMode();
+        foreach ToolName in SystemTools.Keys() do
+            InsertSystemTool(MCPSystemTool, CopyStr(ToolName, 1, MaxStrLen(MCPSystemTool."Tool Name")), CopyStr(SystemTools.Get(ToolName), 1, MaxStrLen(MCPSystemTool."Tool Description")));
+    end;
+
+    local procedure InsertSystemTool(var MCPSystemTool: Record "MCP System Tool"; ToolName: Text[100]; ToolDescription: Text[250])
+    begin
+        MCPSystemTool."Tool Name" := ToolName;
+        MCPSystemTool."Tool Description" := ToolDescription;
+        MCPSystemTool.Insert();
+    end;
     #endregion
 
     #region Connection String
+    internal procedure CreateVSCodeEntraApplication()
+    var
+        MCPEntraApplication: Record "MCP Entra Application";
+    begin
+        if MCPEntraApplication.Get(VSCodeAppNameLbl) then
+            exit;
+
+        MCPEntraApplication.Name := VSCodeAppNameLbl;
+        MCPEntraApplication.Description := VSCodeAppDescriptionLbl;
+        Evaluate(MCPEntraApplication."Client ID", VSCodeClientIdLbl);
+        MCPEntraApplication.Insert();
+    end;
+
     internal procedure ShowConnectionString(ConfigurationName: Text[100])
     var
         MCPConnectionString: Page "MCP Connection String";
@@ -583,19 +696,220 @@ codeunit 8351 "MCP Config Implementation"
     var
         JsonBuilder: TextBuilder;
     begin
-        JsonBuilder.AppendLine('{');
-        JsonBuilder.AppendLine('  "' + MCPPrefix + '": {');
-        JsonBuilder.AppendLine('    "url": "' + MCPUrl + '",');
-        JsonBuilder.AppendLine('    "type": "http",');
-        JsonBuilder.AppendLine('    "headers": {');
-        JsonBuilder.AppendLine('      "TenantId": "' + TenantId + '",');
-        JsonBuilder.AppendLine('      "EnvironmentName": "' + EnvironmentName + '",');
-        JsonBuilder.AppendLine('      "Company": "' + Company + '",');
-        JsonBuilder.AppendLine('      "ConfigurationName": "' + ConfigurationName + '"');
-        JsonBuilder.AppendLine('    }');
+        JsonBuilder.AppendLine('"' + MCPPrefix + '": {');
+        JsonBuilder.AppendLine('  "url": "' + MCPUrl + '",');
+        JsonBuilder.AppendLine('  "type": "http",');
+        JsonBuilder.AppendLine('  "headers": {');
+        JsonBuilder.AppendLine('    "TenantId": "' + TenantId + '",');
+        JsonBuilder.AppendLine('    "EnvironmentName": "' + EnvironmentName + '",');
+        JsonBuilder.AppendLine('    "Company": "' + Company + '",');
+        JsonBuilder.AppendLine('    "ConfigurationName": "' + ConfigurationName + '"');
         JsonBuilder.AppendLine('  }');
         JsonBuilder.AppendLine('}');
         exit(JsonBuilder.ToText());
+    end;
+
+    internal procedure CreateEntraApplication(Name: Text[100]; Description: Text[250]; ClientId: Guid)
+    var
+        MCPEntraApplication: Record "MCP Entra Application";
+    begin
+        MCPEntraApplication.Name := Name;
+        MCPEntraApplication.Description := Description;
+        MCPEntraApplication."Client ID" := ClientId;
+        MCPEntraApplication.Insert();
+    end;
+
+    internal procedure DeleteEntraApplication(Name: Text[100])
+    var
+        MCPEntraApplication: Record "MCP Entra Application";
+    begin
+        if not MCPEntraApplication.Get(Name) then
+            exit;
+
+        MCPEntraApplication.Delete();
+    end;
+    #endregion
+
+    #region Export/Import
+    internal procedure ExportConfigurationToFile(ConfigId: Guid; ConfigName: Text[100])
+    var
+        TempBlob: Codeunit "Temp Blob";
+        OutStream: OutStream;
+        InStream: InStream;
+        FileName: Text;
+    begin
+        TempBlob.CreateOutStream(OutStream, TextEncoding::UTF8);
+        ExportConfiguration(ConfigId, OutStream);
+        TempBlob.CreateInStream(InStream, TextEncoding::UTF8);
+        FileName := StrSubstNo(ExportFileNameTxt, ConfigName, Format(Today(), 0, '<Year4>-<Month,2>-<Day,2>'));
+        DownloadFromStream(InStream, ExportTitleTxt, '', JsonFilterTxt, FileName);
+    end;
+
+    internal procedure ImportConfigurationFromFile()
+    var
+        MCPConfiguration: Record "MCP Configuration";
+        TempBlob: Codeunit "Temp Blob";
+        MCPCopyConfig: Page "MCP Copy Config";
+        InStream: InStream;
+        OutStream: OutStream;
+        FileName: Text;
+        ConfigName: Text[100];
+        ConfigDescription: Text[250];
+    begin
+        if not UploadIntoStream(ImportTitleTxt, '', JsonFilterTxt, FileName, InStream) then
+            exit;
+
+        TempBlob.CreateOutStream(OutStream, TextEncoding::UTF8);
+        CopyStream(OutStream, InStream);
+        TempBlob.CreateInStream(InStream, TextEncoding::UTF8);
+
+        if not GetConfigFromJson(InStream, ConfigName, ConfigDescription) then
+            Error(InvalidJsonErr);
+
+        MCPConfiguration.SetRange(Name, ConfigName);
+        if not MCPConfiguration.IsEmpty() then begin
+            MCPCopyConfig.SetConfigName(ConfigName);
+            MCPCopyConfig.SetConfigDescription(ConfigDescription);
+            MCPCopyConfig.SetInstructionMessage(StrSubstNo(ConfigNameExistsMsg, ConfigName));
+            MCPCopyConfig.LookupMode := true;
+            if MCPCopyConfig.RunModal() <> Action::LookupOK then
+                exit;
+            ConfigName := MCPCopyConfig.GetConfigName();
+            ConfigDescription := MCPCopyConfig.GetConfigDescription();
+        end;
+
+        TempBlob.CreateInStream(InStream, TextEncoding::UTF8);
+        ImportConfiguration(InStream, ConfigName, ConfigDescription);
+    end;
+
+    internal procedure ExportConfiguration(ConfigId: Guid; var OutStream: OutStream)
+    var
+        MCPConfiguration: Record "MCP Configuration";
+        MCPConfigurationTool: Record "MCP Configuration Tool";
+        ConfigJson: JsonObject;
+        ToolsArray: JsonArray;
+        ToolJson: JsonObject;
+        OutputText: Text;
+    begin
+        if not MCPConfiguration.GetBySystemId(ConfigId) then
+            exit;
+
+        ConfigJson.Add('name', MCPConfiguration.Name);
+        ConfigJson.Add('description', MCPConfiguration.Description);
+        ConfigJson.Add('enableDynamicToolMode', MCPConfiguration.EnableDynamicToolMode);
+        ConfigJson.Add('discoverReadOnlyObjects', MCPConfiguration.DiscoverReadOnlyObjects);
+        ConfigJson.Add('allowProdChanges', MCPConfiguration.AllowProdChanges);
+
+        MCPConfigurationTool.SetRange(ID, ConfigId);
+        if MCPConfigurationTool.FindSet() then
+            repeat
+                Clear(ToolJson);
+                ToolJson.Add('objectType', Format(MCPConfigurationTool."Object Type"));
+                ToolJson.Add('objectId', MCPConfigurationTool."Object ID");
+                ToolJson.Add('allowRead', MCPConfigurationTool."Allow Read");
+                ToolJson.Add('allowCreate', MCPConfigurationTool."Allow Create");
+                ToolJson.Add('allowModify', MCPConfigurationTool."Allow Modify");
+                ToolJson.Add('allowDelete', MCPConfigurationTool."Allow Delete");
+                ToolJson.Add('allowBoundActions', MCPConfigurationTool."Allow Bound Actions");
+                ToolsArray.Add(ToolJson);
+            until MCPConfigurationTool.Next() = 0;
+
+        ConfigJson.Add('tools', ToolsArray);
+        ConfigJson.WriteTo(OutputText);
+        OutStream.WriteText(OutputText);
+    end;
+
+    local procedure GetConfigFromJson(var InStream: InStream; var ConfigName: Text[100]; var ConfigDescription: Text[250]): Boolean
+    var
+        ConfigJson: JsonObject;
+        JsonToken: JsonToken;
+        InputText: Text;
+    begin
+        InStream.ReadText(InputText);
+        if not ConfigJson.ReadFrom(InputText) then
+            exit(false);
+
+        if not ConfigJson.Get('name', JsonToken) then
+            exit(false);
+
+        ConfigName := CopyStr(JsonToken.AsValue().AsText(), 1, MaxStrLen(ConfigName));
+
+        if ConfigJson.Get('description', JsonToken) then
+            ConfigDescription := CopyStr(JsonToken.AsValue().AsText(), 1, MaxStrLen(ConfigDescription));
+
+        exit(true);
+    end;
+
+    internal procedure ImportConfiguration(var InStream: InStream; NewName: Text[100]; NewDescription: Text[250]): Guid
+    var
+        MCPConfiguration: Record "MCP Configuration";
+        ConfigJson: JsonObject;
+        ToolsArray: JsonArray;
+        ToolToken: JsonToken;
+        InputText: Text;
+    begin
+        InStream.ReadText(InputText);
+        if not ConfigJson.ReadFrom(InputText) then
+            exit;
+
+        MCPConfiguration.Name := NewName;
+        MCPConfiguration.Description := NewDescription;
+        MCPConfiguration.Active := false;
+
+        if ConfigJson.Contains('enableDynamicToolMode') then
+            MCPConfiguration.EnableDynamicToolMode := ConfigJson.GetBoolean('enableDynamicToolMode');
+
+        if ConfigJson.Contains('discoverReadOnlyObjects') then
+            MCPConfiguration.DiscoverReadOnlyObjects := ConfigJson.GetBoolean('discoverReadOnlyObjects');
+
+        if ConfigJson.Contains('allowProdChanges') then
+            MCPConfiguration.AllowProdChanges := ConfigJson.GetBoolean('allowProdChanges');
+
+        MCPConfiguration.Insert();
+        LogConfigurationCreated(MCPConfiguration);
+
+        if ConfigJson.Contains('tools') then begin
+            ToolsArray := ConfigJson.GetArray('tools');
+            foreach ToolToken in ToolsArray do
+                ImportTool(MCPConfiguration.SystemId, ToolToken.AsObject());
+        end;
+
+        exit(MCPConfiguration.SystemId);
+    end;
+
+    local procedure ImportTool(ConfigId: Guid; ToolJson: JsonObject)
+    var
+        MCPConfigurationTool: Record "MCP Configuration Tool";
+        ObjectTypeText: Text;
+    begin
+        MCPConfigurationTool.Init();
+        MCPConfigurationTool.ID := ConfigId;
+
+        if ToolJson.Contains('objectType') then begin
+            ObjectTypeText := ToolJson.GetText('objectType');
+            if ObjectTypeText = 'Page' then
+                MCPConfigurationTool."Object Type" := MCPConfigurationTool."Object Type"::Page;
+        end;
+
+        if ToolJson.Contains('objectId') then
+            MCPConfigurationTool."Object ID" := ToolJson.GetInteger('objectId');
+
+        if ToolJson.Contains('allowRead') then
+            MCPConfigurationTool."Allow Read" := ToolJson.GetBoolean('allowRead');
+
+        if ToolJson.Contains('allowCreate') then
+            MCPConfigurationTool."Allow Create" := ToolJson.GetBoolean('allowCreate');
+
+        if ToolJson.Contains('allowModify') then
+            MCPConfigurationTool."Allow Modify" := ToolJson.GetBoolean('allowModify');
+
+        if ToolJson.Contains('allowDelete') then
+            MCPConfigurationTool."Allow Delete" := ToolJson.GetBoolean('allowDelete');
+
+        if ToolJson.Contains('allowBoundActions') then
+            MCPConfigurationTool."Allow Bound Actions" := ToolJson.GetBoolean('allowBoundActions');
+
+        MCPConfigurationTool.Insert();
     end;
     #endregion
 
@@ -611,6 +925,7 @@ codeunit 8351 "MCP Config Implementation"
 
     local procedure GetDimensions(MCPConfiguration: Record "MCP Configuration") Dimensions: Dictionary of [Text, Text]
     begin
+        Dimensions.Add('Category', GetTelemetryCategory());
         Dimensions.Add('MCPConfigurationName', MCPConfiguration.Name);
         Dimensions.Add('Active', Format(MCPConfiguration.Active));
         Dimensions.Add('UnblockEditTools', Format(MCPConfiguration.AllowProdChanges));
@@ -633,6 +948,7 @@ codeunit 8351 "MCP Config Implementation"
     var
         Dimensions: Dictionary of [Text, Text];
     begin
+        Dimensions.Add('Category', GetTelemetryCategory());
         Dimensions.Add('MCPConfigurationName', MCPConfiguration.Name);
         if MCPConfiguration.Active <> xMCPConfiguration.Active then begin
             Dimensions.Add('OldActive', Format(xMCPConfiguration.Active));

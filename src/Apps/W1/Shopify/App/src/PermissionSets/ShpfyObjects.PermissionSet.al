@@ -161,7 +161,6 @@ permissionset 30104 "Shpfy - Objects"
         codeunit "Shpfy GQL ApiKey" = X,
         codeunit "Shpfy GQL AssignedFFOrders" = X,
         codeunit "Shpfy GQL BulkOperation" = X,
-        codeunit "Shpfy GQL BulkOperations" = X,
         codeunit "Shpfy GQL BulkOpMutation" = X,
         codeunit "Shpfy GQL Catalog Markets" = X,
         codeunit "Shpfy GQL CatalogPrices" = X,
@@ -497,6 +496,5 @@ permissionset 30104 "Shpfy - Objects"
         page "Shpfy Tax Areas" = X,
         page "Shpfy Transaction Gateways" = X,
         page "Shpfy Transactions" = X,
-        page "Shpfy Variants" = X,
-        query "Shpfy Shipment Location" = X;
+        page "Shpfy Variants" = X;
 }
