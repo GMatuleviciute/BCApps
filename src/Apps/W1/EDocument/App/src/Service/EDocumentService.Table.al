@@ -309,6 +309,32 @@ table 6103 "E-Document Service"
             ToolTip = 'Specifies the customizations for the processing of e-documents processed the service.';
             DataClassification = SystemMetadata;
         }
+        field(70; "Invoice Match Tolerance %"; Decimal)
+        {
+            Caption = 'Invoice Match Tolerance %';
+            ToolTip = 'Specifies the percentage variance allowed when matching E-Document amounts to Purchase Invoice amounts.';
+            DecimalPlaces = 0 : 2;
+            MinValue = 0;
+            MaxValue = 100;
+            InitValue = 0.5;
+            DataClassification = SystemMetadata;
+        }
+        field(71; "Invoice Match Date Window"; Integer)
+        {
+            Caption = 'Invoice Match Date Window';
+            ToolTip = 'Specifies the number of days before and after the E-Document date to consider for matching.';
+            MinValue = 0;
+            MaxValue = 365;
+            InitValue = 3;
+            DataClassification = SystemMetadata;
+        }
+        field(72; "Auto-Suggest Invoice Match"; Boolean)
+        {
+            Caption = 'Auto-Suggest Invoice Match';
+            ToolTip = 'Specifies whether to automatically suggest matching Purchase Invoices when an E-Document is received.';
+            InitValue = true;
+            DataClassification = SystemMetadata;
+        }
         #endregion [60-80] are reserved for purchase draft document settings.
     }
     keys

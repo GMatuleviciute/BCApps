@@ -93,6 +93,24 @@ table 6124 "E-Document Log"
             Caption = 'Step Undone';
             Editable = false;
         }
+        field(14; "Link Action"; Enum "E-Doc. Link Action")
+        {
+            Caption = 'Link Action';
+            ToolTip = 'Specifies the type of linking action that was performed.';
+            DataClassification = SystemMetadata;
+        }
+        field(15; "Previous E-Document Link"; Guid)
+        {
+            Caption = 'Previous E-Document Link';
+            ToolTip = 'Specifies the previous E-Document that was linked before this override.';
+            DataClassification = SystemMetadata;
+        }
+        field(16; "Override Reason"; Text[250])
+        {
+            Caption = 'Override Reason';
+            ToolTip = 'Specifies the reason provided for overriding the previous link.';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

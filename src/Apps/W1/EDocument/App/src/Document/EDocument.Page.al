@@ -387,6 +387,38 @@ page 6121 "E-Document"
                     end;
                 }
             }
+            group(InvoiceLinking)
+            {
+                Caption = 'Invoice Linking';
+                action(LinkToInvoice)
+                {
+                    Caption = 'Link to Invoice';
+                    ToolTip = 'Link this E-Document to an existing Purchase Invoice.';
+                    Image = LinkAccount;
+                    Visible = IsIncomingDoc;
+                    Enabled = CanLinkToInvoice;
+
+                    trigger OnAction()
+                    begin
+                        EDocInvoiceLinking.RunLinkToInvoiceWizard(Rec);
+                        CurrPage.Update(false);
+                    end;
+                }
+                action(UnlinkFromInvoice)
+                {
+                    Caption = 'Unlink from Invoice';
+                    ToolTip = 'Remove the link between this E-Document and the Purchase Invoice.';
+                    Image = UnLinkAccount;
+                    Visible = IsIncomingDoc;
+                    Enabled = CanUnlinkFromInvoice;
+
+                    trigger OnAction()
+                    begin
+                        EDocInvoiceLinking.RunUnlinkWizard(Rec);
+                        CurrPage.Update(false);
+                    end;
+                }
+            }
             group(Troubleshoot)
             {
                 Caption = 'Troubleshoot';
@@ -461,6 +493,8 @@ page 6121 "E-Document"
         {
             group(Category_Process)
             {
+                actionref(LinkToInvoice_Promoted; LinkToInvoice) { }
+                actionref(UnlinkFromInvoice_Promoted; UnlinkFromInvoice) { }
                 actionref(MatchToOrderCE_Promoted; MatchToOrderCopilotEnabled) { }
                 actionref(MatchToOrder_Promoted; MatchToOrder) { }
                 actionref(LinkOrder_Promoted; LinkOrder) { }
@@ -532,6 +566,7 @@ page 6121 "E-Document"
         SetStyle();
         ResetActionVisiability();
         SetIncomingDocActions();
+        SetInvoiceLinkingActions();
         FillLineBuffer();
 
         EDocImport.V1_ProcessEDocPendingOrderMatch(Rec);
@@ -615,6 +650,17 @@ page 6121 "E-Document"
     begin
         ShowMapToOrder := false;
         ShowRelink := false;
+        CanLinkToInvoice := false;
+        CanUnlinkFromInvoice := false;
+    end;
+
+    local procedure SetInvoiceLinkingActions()
+    begin
+        if not IsIncomingDoc then
+            exit;
+
+        CanLinkToInvoice := EDocInvoiceLinking.CanLink(Rec);
+        CanUnlinkFromInvoice := EDocInvoiceLinking.CanUnlink(Rec);
     end;
 
     local procedure FillLineBuffer()
@@ -631,11 +677,12 @@ page 6121 "E-Document"
         EDocImport: Codeunit "E-Doc. Import";
         EDocumentErrorHelper: Codeunit "E-Document Error Helper";
         EDocumentHelper: Codeunit "E-Document Processing";
+        EDocInvoiceLinking: Codeunit "E-Doc. Invoice Linking";
         ErrorsAndWarningsNotification: Notification;
         NewEDocumentExperienceActive: Boolean;
         ShowClearanceInfo: Boolean;
         RecordLinkTxt, StyleStatusTxt : Text;
-        ShowRelink, ShowMapToOrder, HasErrorsOrWarnings, HasErrors, IsIncomingDoc, IsProcessed, SubmitClearanceVisible : Boolean;
+        ShowRelink, ShowMapToOrder, HasErrorsOrWarnings, HasErrors, IsIncomingDoc, IsProcessed, SubmitClearanceVisible, CanLinkToInvoice, CanUnlinkFromInvoice : Boolean;
         EDocHasErrorOrWarningMsg: Label 'Errors or warnings found for E-Document. Please review below in "Error Messages" section.';
         DocNotCreatedMsg: Label 'Failed to create new %1 from E-Document. Please review errors below.', Comment = '%1 - E-Document Document Type';
 }

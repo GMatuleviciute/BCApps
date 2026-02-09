@@ -353,6 +353,20 @@ page 6105 "Inbound E-Documents"
                     Rec.ExportDataStorage();
                 end;
             }
+            action(LinkToInvoice)
+            {
+                ApplicationArea = Basic, Suite;
+                Caption = 'Link to Invoice';
+                ToolTip = 'Link this E-Document to an existing Purchase Invoice.';
+                Image = LinkAccount;
+                Enabled = CanLinkToInvoice;
+
+                trigger OnAction()
+                begin
+                    EDocInvoiceLinking.RunLinkToInvoiceWizard(Rec);
+                    CurrPage.Update(false);
+                end;
+            }
         }
         area(Promoted)
         {
@@ -381,6 +395,7 @@ page 6105 "Inbound E-Documents"
             }
 #endif
             actionref(Promoted_EDocumentServices; EDocumentServices) { }
+            actionref(Promoted_LinkToInvoice; LinkToInvoice) { }
         }
     }
     views
@@ -421,6 +436,8 @@ page 6105 "Inbound E-Documents"
         HasPdf := false;
         if EDocDataStorage.Get(Rec."Unstructured Data Entry No.") then
             HasPdf := EDocDataStorage."File Format" = Enum::"E-Doc. File Format"::PDF;
+
+        CanLinkToInvoice := EDocInvoiceLinking.CanLink(Rec);
 #if not CLEAN27
         SetEmailActionsVisibility();
 #endif
@@ -584,8 +601,9 @@ page 6105 "Inbound E-Documents"
         EDocumentPurchaseHeader: Record "E-Document Purchase Header";
         AgentTask: Record "Agent Task";
         EDocumentHelper: Codeunit "E-Document Helper";
+        EDocInvoiceLinking: Codeunit "E-Doc. Invoice Linking";
         RecordLinkTxt, DocumentNameTxt, DocumentTypeStyleTxt, ConfirmedVendorTxt, AgentTaskStatus : Text;
-        HasPdf: Boolean;
+        HasPdf, CanLinkToInvoice : Boolean;
 #if not CLEAN27
         EmailVisibilityFlag: Boolean;
 #endif
