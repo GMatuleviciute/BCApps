@@ -193,6 +193,18 @@ page 6133 "E-Document Service"
                 }
 
             }
+            group(Attachments)
+            {
+                Caption = 'Attachments';
+                field("Attach Sales E-Document"; Rec."Attach Sales E-Document")
+                {
+                    ToolTip = 'Specifies whether the sales e-document should be attached.';
+                }
+                field("Attach Purchase E-Document"; Rec."Attach Purchase E-Document")
+                {
+                    ToolTip = 'Specifies whether the purchase e-document should be attached.';
+                }
+            }
             part(EDocumentDataExchDef; "E-Doc. Service Data Exch. Sub")
             {
                 ApplicationArea = All;

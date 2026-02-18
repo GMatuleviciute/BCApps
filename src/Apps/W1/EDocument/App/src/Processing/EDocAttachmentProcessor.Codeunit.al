@@ -4,9 +4,12 @@
 // ------------------------------------------------------------------------------------------------
 namespace Microsoft.eServices.EDocument;
 
+using Microsoft.eServices.EDocument;
 using Microsoft.Foundation.Attachment;
 using Microsoft.Purchases.Document;
 using Microsoft.Purchases.History;
+using System.IO;
+using System.Utilities;
 
 
 codeunit 6169 "E-Doc. Attachment Processor"
@@ -116,6 +119,29 @@ codeunit 6169 "E-Doc. Attachment Processor"
         until DocumentAttachment.Next() = 0;
     end;
 
+    local procedure ExtractXMLFromPDF(var TempBlob: Codeunit System.Utilities."Temp Blob"; FileName: Text; var IncomingDocumentAttachment: Record "Incoming Document Attachment")
+    var
+        PDFDocument: Codeunit "PDF Document";
+        ImportAttachmentIncDoc: Codeunit "Import Attachment - Inc. Doc.";
+        ExtractedXmlBlob: Codeunit "Temp Blob";
+        PdfInStream: InStream;
+    begin
+        TempBlob.CreateInStream(PdfInStream);
+        if not PDFDocument.GetDocumentAttachmentStream(PdfInStream, ExtractedXmlBlob) then
+            exit;
+
+        if not ExtractedXmlBlob.HasValue() then
+            exit;
+
+        IncomingDocumentAttachment.Default := false;
+        IncomingDocumentAttachment."Main Attachment" := false;
+        if not ImportAttachmentIncDoc.ImportAttachment(IncomingDocumentAttachment, FileName, ExtractedXmlBlob) then
+            exit;
+
+        IncomingDocumentAttachment."Is E-Document" := true;
+        IncomingDocumentAttachment.Modify(false);
+    end;
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Document Attachment Mgmt", OnCopyAttachmentsOnAfterSetFromParameters, '', false, false)]
     local procedure OnCopyAttachmentsOnAfterSetFromParameters(FromRecRef: RecordRef; var FromDocumentAttachment: Record "Document Attachment"; var FromAttachmentDocumentType: Enum "Attachment Document Type")
     var
@@ -183,5 +209,104 @@ codeunit 6169 "E-Doc. Attachment Processor"
 
     var
         MissingEDocumentTypeErr: Label 'E-Document type %1 is not supported for attachments', Comment = '%1 - E-Document document type';
+
+    /// <summary>
+    /// Attaches the original E-Document file to the Incoming Document of a Purchase Header.
+    /// Creates an Incoming Document Attachment and links it to the Purchase Header.
+    /// </summary>
+    /// <param name="EDocument">The E-Document containing the file to attach</param>
+    /// <param name="PurchaseHeader">The Purchase Header to attach the incoming document to</param>
+    procedure AttachToIncomingDocument(EDocument: Record "E-Document"; var PurchaseHeader: Record "Purchase Header")
+    var
+        EDocDataStorage: Record "E-Doc. Data Storage";
+        IncomingDocumentAttachment: Record "Incoming Document Attachment";
+        EDocumentService: Record "E-Document Service";
+        ImportAttachmentIncDoc: Codeunit "Import Attachment - Inc. Doc.";
+        TempBlob: Codeunit "Temp Blob";
+        FileName: Text;
+        EDocumentFileNameLbl: Label 'E-Document_%1.%2', Comment = '%1 = E-Document Entry No., %2 = File Format', Locked = true;
+    begin
+        if not (EDocument."Document Type" in [
+            EDocument."Document Type"::"Purchase Invoice",
+            EDocument."Document Type"::"Purchase Credit Memo",
+            EDocument."Document Type"::"Purchase Order",
+            EDocument."Document Type"::"Purchase Quote",
+            EDocument."Document Type"::"Purchase Return Order"]) then
+            exit;
+
+        EDocumentService.Get(EDocument.Service);
+        if not EDocumentService."Attach Purchase E-Document" then
+            exit;
+        if EDocument."Unstructured Data Entry No." = 0 then
+            exit;
+
+        if not EDocDataStorage.Get(EDocument."Unstructured Data Entry No.") then
+            exit;
+
+        TempBlob := EDocDataStorage.GetTempBlob();
+        if not TempBlob.HasValue() then
+            exit;
+
+        if EDocument."File Name" <> '' then
+            FileName := EDocument."File Name"
+        else
+            FileName := StrSubstNo(EDocumentFileNameLbl, EDocument."Entry No", EDocDataStorage."File Format");
+
+        IncomingDocumentAttachment.SetRange("Document No.", PurchaseHeader."No.");
+        IncomingDocumentAttachment.SetRange("Posting Date", PurchaseHeader."Posting Date");
+        IncomingDocumentAttachment.SetContentFromBlob(TempBlob);
+
+        if not ImportAttachmentIncDoc.ImportAttachment(IncomingDocumentAttachment, FileName, TempBlob) then
+            exit;
+
+        IncomingDocumentAttachment."Is E-Document" := true;
+        IncomingDocumentAttachment.Modify(false);
+
+        if EDocDataStorage."File Format" = EDocDataStorage."File Format"::PDF then begin
+            FileName := StrSubstNo(EDocumentFileNameLbl, EDocument."Entry No", EDocDataStorage."File Format"::XML);
+            ExtractXMLFromPDF(TempBlob, FileName, IncomingDocumentAttachment);
+        end;
+
+        PurchaseHeader.Validate("Incoming Document Entry No.", IncomingDocumentAttachment."Incoming Document Entry No.");
+        PurchaseHeader.Modify(false);
+    end;
+
+    /// <summary>
+    /// Attaches the exported E-Document XML file as an Incoming Document Attachment to the source document.
+    /// Only attaches for Sales Invoice Header when the "Attach Sales E-Document" setting is enabled.
+    /// </summary>
+    /// <param name="EDocumentService">The E-Document Service configuration</param>
+    /// <param name="EDocument">The E-Document being exported</param>
+    /// <param name="SourceDocumentHeader">The source document (e.g., Sales Invoice Header)</param>
+    /// <param name="TempBlob">The blob containing the exported E-Document content</param>
+    internal procedure AttachIncomingDocumentOnExport(EDocumentService: Record "E-Document Service"; EDocument: Record "E-Document"; SourceDocumentHeader: RecordRef; var TempBlob: Codeunit "Temp Blob")
+    var
+        IncomingDocumentAttachment: Record "Incoming Document Attachment";
+        ImportAttachmentIncDoc: Codeunit "Import Attachment - Inc. Doc.";
+        EDocumentHelper: Codeunit "E-Document Processing";
+        RecordLinkTxt: Text;
+        FileNameTok: Label '%1.xml', Locked = true;
+    begin
+        if not (EDocument."Document Type" in [
+            EDocument."Document Type"::"Sales Invoice",
+            EDocument."Document Type"::"Sales Credit Memo",
+            EDocument."Document Type"::"Sales Order",
+            EDocument."Document Type"::"Sales Quote",
+            EDocument."Document Type"::"Sales Return Order"]) then
+            exit;
+
+        if not EDocumentService."Attach Sales E-Document" then
+            exit;
+
+        RecordLinkTxt := EDocumentHelper.GetRecordLinkText(EDocument);
+        IncomingDocumentAttachment.SetRange("Document No.", EDocument."Document No.");
+        IncomingDocumentAttachment.SetRange("Posting Date", EDocument."Posting Date");
+        IncomingDocumentAttachment.SetContentFromBlob(TempBlob);
+        if not ImportAttachmentIncDoc.ImportAttachment(IncomingDocumentAttachment, StrSubstNo(FileNameTok, RecordLinkTxt), TempBlob) then
+            exit;
+
+        IncomingDocumentAttachment."Is E-Document" := true;
+        IncomingDocumentAttachment.Modify(false);
+    end;
 
 }
