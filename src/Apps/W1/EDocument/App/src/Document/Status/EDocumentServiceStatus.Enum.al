@@ -78,6 +78,11 @@ enum 6106 "E-Document Service Status" implements IEDocumentStatus
         Caption = 'Approval error';
         Implementation = IEDocumentStatus = "E-Doc Error Status";
     }
+    value(20; "Invoice Linked")
+    {
+        Caption = 'Invoice Linked';
+        Implementation = IEDocumentStatus = "E-Doc Processed Status";
+    }
 
     #region clearance model 30 - 40
     value(30; "Not Cleared")

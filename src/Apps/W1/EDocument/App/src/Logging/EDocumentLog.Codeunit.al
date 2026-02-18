@@ -183,6 +183,34 @@ codeunit 6132 "E-Document Log"
         EDocumentLog.Insert();
     end;
 
+    internal procedure LogInvoiceLinkAction(EDocument: Record "E-Document"; LinkAction: Enum "E-Doc. Link Action"; PreviousLink: Guid; OverrideReason: Text[250])
+    var
+        EDocumentLog: Record "E-Document Log";
+        EDocumentService: Record "E-Document Service";
+        EDocumentServiceStatus: Record "E-Document Service Status";
+    begin
+        EDocumentServiceStatus.SetRange("E-Document Entry No", EDocument."Entry No");
+        if EDocumentServiceStatus.FindFirst() then
+            if EDocumentService.Get(EDocumentServiceStatus."E-Document Service Code") then;
+
+        EDocumentLog.Validate("Document Type", EDocument."Document Type");
+        EDocumentLog.Validate("Document No.", EDocument."Document No.");
+        EDocumentLog.Validate("E-Doc. Entry No", EDocument."Entry No");
+        EDocumentLog.Validate(Status, Enum::"E-Document Service Status"::"Invoice Linked");
+        EDocumentLog.Validate("Link Action", LinkAction);
+        EDocumentLog.Validate("Previous E-Document Link", PreviousLink);
+        EDocumentLog.Validate("Override Reason", OverrideReason);
+#if not CLEAN26
+#pragma warning disable AL0432
+        EDocumentLog.Validate("Service Integration", EDocumentService."Service Integration");
+#pragma warning restore AL0432
+#endif
+        EDocumentLog.Validate("Service Integration V2", EDocumentService."Service Integration V2");
+        EDocumentLog.Validate("Service Code", EDocumentService.Code);
+        EDocumentLog.Validate("Document Format", EDocumentService."Document Format");
+        EDocumentLog.Insert();
+    end;
+
     internal procedure InsertIntegrationLog(var EDocument: Record "E-Document"; var EDocumentService: Record "E-Document Service"; HttpRequest: HttpRequestMessage; HttpResponse: HttpResponseMessage)
     var
         EDocumentIntegrationLog: Record "E-Document Integration Log";

@@ -284,6 +284,36 @@ table 6121 "E-Document"
         }
         #endregion
 
+        #region Invoice Linking
+        field(50; "Linked Invoice Match Type"; Enum "E-Doc. Invoice Match Type")
+        {
+            Caption = 'Linked Invoice Match Type';
+            ToolTip = 'Specifies how this E-Document was matched to the Purchase Invoice.';
+            Editable = false;
+            DataClassification = SystemMetadata;
+        }
+        field(51; "Link Override Reason"; Text[250])
+        {
+            Caption = 'Link Override Reason';
+            ToolTip = 'Specifies the reason for overriding an existing E-Document link.';
+            DataClassification = CustomerContent;
+        }
+        field(52; "Linked By"; Code[50])
+        {
+            Caption = 'Linked By';
+            ToolTip = 'Specifies the user who linked this E-Document to the Purchase Invoice.';
+            Editable = false;
+            DataClassification = EndUserIdentifiableInformation;
+        }
+        field(53; "Linked At"; DateTime)
+        {
+            Caption = 'Linked At';
+            ToolTip = 'Specifies when this E-Document was linked to the Purchase Invoice.';
+            Editable = false;
+            DataClassification = SystemMetadata;
+        }
+        #endregion Invoice Linking
+
         #region Clearance Model
         field(60; "Clearance Date"; DateTime)
         {

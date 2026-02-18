@@ -49,7 +49,10 @@ codeunit 6104 "Import E-Document Process"
                 GlobalStep::"Structure received data":
                     StructureReceivedData(GlobalEDocument, EDocumentLog);
                 GlobalStep::"Read into Draft":
-                    ReadIntoDraft(GlobalEDocument);
+                    begin
+                        ReadIntoDraft(GlobalEDocument);
+                        TryAutoSuggestInvoiceMatch(GlobalEDocument);
+                    end;
                 GlobalStep::"Prepare draft":
                     PrepareDraft(GlobalEDocument, GlobalEDocImportParameters);
                 GlobalStep::"Finish draft":
@@ -341,6 +344,21 @@ codeunit 6104 "Import E-Document Process"
     begin
         FromBlob.CreateInStream(InStream);
         EDocAttachmentProcessor.Insert(EDocument, InStream, EDocument."File Name");
+    end;
+
+    local procedure TryAutoSuggestInvoiceMatch(var EDocument: Record "E-Document")
+    var
+        EDocService: Record "E-Document Service";
+        EDocInvoiceLinking: Codeunit "E-Doc. Invoice Linking";
+    begin
+        // Check if the E-Document service has auto-suggest enabled
+        EDocService := EDocument.GetEDocumentService();
+        if not EDocService."Auto-Suggest Invoice Match" then
+            exit;
+
+        // Try to find and suggest a match
+        // If successful, the E-Document will be linked to the Purchase Invoice
+        EDocInvoiceLinking.TrySuggestMatch(EDocument);
     end;
 
     internal procedure GetStep(): Enum "Import E-Document Steps"

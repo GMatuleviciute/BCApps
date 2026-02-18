@@ -8,7 +8,8 @@ permissionset 6104 "E-Doc. Core - Admin"
     Access = Public;
     Caption = 'E-Document - Admin';
 
-    IncludedPermissionSets = "E-Doc. Core - User";
+    IncludedPermissionSets = "E-Doc. Core - User",
+                             "E-Doc. Core - Link";
 
     Permissions =
         tabledata "E-Document Service" = IMD,

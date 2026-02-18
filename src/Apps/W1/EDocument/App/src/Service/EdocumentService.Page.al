@@ -84,6 +84,24 @@ page 6133 "E-Document Service"
                         ToolTip = 'Specifies if document totals are checked when posting document.';
                     }
                 }
+                group(InvoiceLinking)
+                {
+                    Caption = 'Invoice Linking';
+                    Visible = Rec."Import Process" = Enum::"E-Document Import Process"::"Version 2.0";
+
+                    field("Auto-Suggest Invoice Match"; Rec."Auto-Suggest Invoice Match")
+                    {
+                        ToolTip = 'Specifies whether to automatically suggest matching Purchase Invoices when an E-Document is received.';
+                    }
+                    field("Invoice Match Tolerance %"; Rec."Invoice Match Tolerance %")
+                    {
+                        ToolTip = 'Specifies the percentage variance allowed when matching E-Document amounts to Purchase Invoice amounts.';
+                    }
+                    field("Invoice Match Date Window"; Rec."Invoice Match Date Window")
+                    {
+                        ToolTip = 'Specifies the number of days before and after the E-Document date to consider for matching.';
+                    }
+                }
                 group(ImportParamenters)
                 {
                     Caption = 'Parameters';
