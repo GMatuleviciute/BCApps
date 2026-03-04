@@ -167,6 +167,7 @@ codeunit 6102 "E-Doc. Export"
         ErrorCount := EDocumentErrorHelper.ErrorMessageCount(EDocument);
         CreateEDocument(EDocumentService, EDocument, SourceDocumentHeaderMapped, SourceDocumentLineMapped, TempBlob);
         Success := EDocumentErrorHelper.ErrorMessageCount(EDocument) = ErrorCount;
+        OnExportEDocumentAfterCreateEDocument(EDocumentService, EDocument, SourceDocumentHeaderMapped, SourceDocumentLineMapped, TempBlob, Success);
         if Success then
             EDocServiceStatus := Enum::"E-Document Service Status"::Exported
         else
@@ -528,6 +529,11 @@ codeunit 6102 "E-Doc. Export"
 
     [IntegrationEvent(false, false)]
     local procedure OnAfterCreateEDocument(var EDocument: Record "E-Document"; var SourceDocumentHeader: RecordRef)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnExportEDocumentAfterCreateEDocument(EDocumentService: Record "E-Document Service"; EDocument: Record "E-Document"; SourceDocumentHeaderMapped: RecordRef; SourceDocumentLineMapped: RecordRef; var TempBlob: Codeunit "Temp Blob"; Success: Boolean)
     begin
     end;
 }
